@@ -1,0 +1,18 @@
+// even.createHostMessage.jp
+
+function createHostMessage(o){
+
+	$('<div>')
+		.attr('id', o.id + '_wrap')
+		.addClass('wrap')
+
+	$('<div>')
+		.attr('id', o.id + '_shape');
+		.addClass('shape')
+
+	$('<div>')
+		.attr('id', o.id + '_text');
+		.addClass('text');
+
+	
+}

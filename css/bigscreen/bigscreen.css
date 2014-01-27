@@ -1,0 +1,34 @@
+/* bigscreen.css */
+
+html,
+body,
+article#bigscreenApp,
+section.layer
+{
+	font-family: 'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','メイリオ',Meiryo,'ＭＳ Ｐゴシック',sans-serif;
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	font-size: 10px;
+}
+
+.layer{
+	font-size: 0.1em;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+#hostLayer2{
+	z-index: 300;
+}
+
+#visitorLayer{
+	z-index: 200;
+}
+
+#hostLayer1{
+	z-index: 100;
+}

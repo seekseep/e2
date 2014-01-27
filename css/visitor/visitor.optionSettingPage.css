@@ -1,0 +1,186 @@
+/*
+// = visitor.startPage.css
+// - 説明
+// 		~ ビジターのオプション設定ページのスタイルの定義
+// - 文字コード
+// 		~ UTF-8
+// - 参照されるファイル
+//		~ visitor.html
+// - 作成者
+//		~ ヨコヤマタク
+// 		~ B2266@oic.jp
+// - 最終更新日
+//		~ 2013-12-06
+*/
+
+/*========================================
+	文字コードの宣言
+----------------------------------------*/
+@charset 'utf-8';
+
+/*========================================
+	section#optionSettingPageの設定
+----------------------------------------*/
+
+section#optionSettingPage{
+}
+
+section#optionSettingPage > .pageContent{
+	overflow: hidden;
+	height: 85%;
+}
+
+section#optionSettingPage > .pageContent > section{
+	position: relative;
+	overflow: hidden;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+}
+
+section#optionSettingPage > .pageContent > section.optionSelecter > section.selectItems{
+	position: relative;
+	z-index: 0;
+	width: 100%;
+	height: 100%;
+}
+
+section#optionSettingPage > .pageContent > section.optionSelecter > section.selectItems > div.selectItem{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transition: all .25s linear 0s;
+	   -moz-transition: all .25s linear 0s;
+	    -ms-transition: all .25s linear 0s;
+	     -o-transition: all .25s linear 0s;
+	        transition: all .25s linear 0s;       
+}
+
+section#optionSettingPage > .pageContent > section#setMessageShape.optionSelecter > section.selectItems > div.selectItem{
+	width: 10em;
+	height: 10em;
+
+}
+
+section#optionSettingPage > .pageContent > section#setMessageColor.optionSelecter > section.selectItems > div.selectItem{
+	width: 70%;
+	height: 80%;
+}
+
+section#optionSettingPage > .pageContent > section.optionSelecter > section.selectItems > div.prevItem{
+	-webkit-transform: translate(-350%, -50%);
+	   -moz-transform: translate(-350%, -50%);
+	    -ms-transform: translate(-350%, -50%);
+	     -o-transform: translate(-350%, -50%);
+	        transform: translate(-350%, -50%);	
+}
+
+section#optionSettingPage > .pageContent > section.optionSelecter > section.selectItems > div.currentItem{
+	-webkit-transform: translate(-50%, -50%);
+	   -moz-transform: translate(-50%, -50%);
+	    -ms-transform: translate(-50%, -50%);
+	     -o-transform: translate(-50%, -50%);
+	        transform: translate(-50%, -50%);
+}
+
+section#optionSettingPage > .pageContent > section.optionSelecter > section.selectItems > div.nextItem{
+	-webkit-transform: translate(250%, -50%);
+	   -moz-transform: translate(250%, -50%);
+	    -ms-transform: translate(250%, -50%);
+	     -o-transform: translate(250%, -50%);
+	        transform: translate(250%, -50%);	
+}
+
+section#optionSettingPage > .pageContent > #setMessageShape{
+	height: 60%;
+}
+
+section#optionSettingPage > .pageContent > #setMessageColor{
+	height: 20%;
+	border-top: solid 1px #CCC;	
+	border-bottom: solid 1px #CCC;	
+}
+
+section#optionSettingPage > .pageContent > #setMessageColor .colorSample{
+	width: 70%;
+	height: 80%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	   -moz-transform: translate(-50%, -50%);
+	    -ms-transform: translate(-50%, -50%);
+	     -o-transform: translate(-50%, -50%);
+	        transform: translate(-50%, -50%);		
+}
+
+section#optionSettingPage > .pageContent > #setMessageText{
+	height: 20%;
+	border-bottom: solid 1px #CCC;	
+}
+
+
+/*======================================*/
+
+section#optionSettingPage > .pageContent > #setMessageText > .inner{
+	width : 70%;
+	height: 80%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	   -moz-transform: translate(-50%, -50%);
+	    -ms-transform: translate(-50%, -50%);
+	     -o-transform: translate(-50%, -50%);
+	        transform: translate(-50%, -50%);	
+}
+
+section#optionSettingPage > .pageContent > #setMessageText > .inner > *{
+	float: left;
+	height: 100%;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;	
+}
+
+section#optionSettingPage > .pageContent > #setMessageText > .inner > input{
+	width: 75%;
+	padding: 1.0em;
+}
+
+section#optionSettingPage > .pageContent > #setMessageText > .inner > #changeTextButton{
+	width: 25%;
+}
+
+section#optionSettingPage > .pageContent > #setMessageText > .inner > #changeTextButton > .buttonBody{
+	width: 90%;
+	height: 100%;
+	float: right;
+	background-color: rgba(0,0,0,0.5);
+	position: relative;
+	cursor: pointer;
+}
+
+section#optionSettingPage > .pageContent > #setMessageText > .inner > #changeTextButton > .buttonBody:active{
+	background-color: rgba(0,0,0,0.7)
+}
+
+section#optionSettingPage > .pageContent > #setMessageText > .inner > #changeTextButton > .buttonBody > .buttonIcon{
+	width : 1.5em;
+	height: 1.5em;
+	border: solid 0.2em rgba(255,255,255,1);
+	border-radius: 50%;
+	position: absolute;
+	background-color: rgba(0,0,0,0);
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	   -moz-transform: translate(-50%, -50%);
+	    -ms-transform: translate(-50%, -50%);
+	     -o-transform: translate(-50%, -50%);
+	        transform: translate(-50%, -50%);
+}
+
+/*======================================*/

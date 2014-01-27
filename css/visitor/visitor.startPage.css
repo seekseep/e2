@@ -1,0 +1,52 @@
+/*
+// = visitor.startPage.css
+// - 説明
+// 		~ ビジターのスタートページのスタイルを定義する
+// - 文字コード
+// 		~ UTF-8
+// - 参照されるファイル
+//		~ visitor.html
+// - 作成者
+//		~ ヨコヤマタク
+// 		~ B2266@oic.jp
+// - 最終更新日
+//		~ 2013-12-06
+*/
+
+/*========================================
+	文字コードの宣言
+----------------------------------------*/
+@charset 'utf-8';
+
+/*========================================
+	section#startPageの設定
+----------------------------------------*/
+section#startPage{
+	-webkit-transition: margin-top .3s ease;
+	   -moz-transition: margin-top .3s ease;
+	    -ms-transition: margin-top .3s ease;
+	     -o-transition: margin-top .3s ease;
+	        transition: margin-top .3s ease;
+}
+
+section#startPage > .pageContent{
+	height: 85%;
+	position: relative;
+}
+
+section#startPage > .pageContent > h1#startLogo{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	width: 12em;
+	height: 12em;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	   -moz-transform: translate(-50%, -50%);
+	    -ms-transform: translate(-50%, -50%);
+	     -o-transform: translate(-50%, -50%);
+	        transform: translate(-50%, -50%);	
+}
+/*======================================*/

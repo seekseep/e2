@@ -1,0 +1,169 @@
+/*========================================
+	文字コードの宣言
+----------------------------------------*/
+@charset 'utf-8';
+
+#localNaviGroup{
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+	padding-left: 200px;
+	width: 100%;
+	height: 100px;
+	z-index: 2;
+}
+
+#localNaviGroup > .inner{
+	width: 95%;
+	height: 100%;
+	margin: 0 auto;
+	position: relative;
+	overflow: hidden;
+	background-color: rgba(0,0,0,0.4);
+}
+
+.localNavi{
+	z-index: 100;
+	width: 100%;
+	height: 100%;
+	display: none;
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	-webkit-transform: translate(0, 0);
+	   -moz-transform: translate(0, 0);
+	    -ms-transform: translate(0, 0);
+	     -o-transform: translate(0, 0);
+	        transform: translate(0, 0);	
+	-webkit-transition: all .5s ease;
+	   -moz-transition: all .5s ease;
+	    -ms-transition: all .5s ease;
+	     -o-transition: all .5s ease;
+	        transition: all .5s ease;
+}
+
+.localNavi.current{
+	opacity: 1;
+	display: block;
+}
+
+.localNaviItems{
+	color: #999;	
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 10px;
+	list-style: none;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+
+.localNaviItem,
+.localNaviItem > *{
+	-webkit-transition: all .5s ease;
+	   -moz-transition: all .5s ease;
+	    -ms-transition: all .5s ease;
+	     -o-transition: all .5s ease;
+	        transition: all .5s ease;
+}
+
+.localNaviItem{
+	display: block;
+	float: left;
+	height: 100%;
+	width: 25%;
+	font-size: 12px;
+	position: relative;
+	cursor: pointer;
+}
+
+.localNaviItem:hover .localNaviItemBody,
+.localNaviItem.current .localNaviItemBody{
+	color: #EEE;	
+	background-color: rgba(0,0,0,0.4);
+}
+
+.localNaviItem:active .localNaviBody{
+	background-color: rgba(0,0,0,0.8);
+}
+
+.localNaviItemBody{
+	color: #999;	
+	background-color: rgba(0,0,0,0.2);
+	width: 90%;
+	height: 80px;
+	border-radius: 5px;
+	padding: 5px;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	   -moz-transform: translate(-50%, -50%);
+	    -ms-transform: translate(-50%, -50%);
+	     -o-transform: translate(-50%, -50%);
+	        transform: translate(-50%, -50%);
+}
+
+.localNaviItemIcon{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 70px;
+	height: 70px;
+	position: relative;
+}
+
+.localNaviItemIcon > .inner{
+	z-index: 100;
+	background-color: rgba(255,255,255,0.1);
+	border-radius: 50%;
+	height: 80%;
+	width: 80%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	   -moz-transform: translate(-50%, -50%);
+	    -ms-transform: translate(-50%, -50%);
+	     -o-transform: translate(-50%, -50%);
+	        transform: translate(-50%, -50%);
+}
+
+.localNaviItemName{
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 0;
+	height: 100%;
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+
+.localNaviItemNameBody{
+	width: 100%;
+	padding-left: 80px;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+	display: block;
+	position: absolute;
+	text-align: center;
+	top: 50%;
+	left: 0;
+	-webkit-transform: translate(0, -50%);
+	   -moz-transform: translate(0, -50%);
+	    -ms-transform: translate(0, -50%);
+	     -o-transform: translate(0, -50%);
+	        transform: translate(0, -50%);
+}

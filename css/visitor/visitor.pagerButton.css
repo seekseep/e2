@@ -1,0 +1,138 @@
+/*
+// = visitor.pagerButton.css
+// - 説明
+// 		~ ビジターページでページ移動の為に使われるボタンのスタイルを定義する
+// - 文字コード
+// 		~ UTF-8
+// - 参照されるファイル
+//		~ visitor.html
+// - 作成者
+//		~ ヨコヤマタク
+// 		~ B2266@oic.jp
+// - 最終更新日
+//		~ 2013-12-06
+*/
+
+/*========================================
+	文字コードの宣言
+----------------------------------------*/
+@charset 'utf-8';
+
+/*========================================
+	section.pagerButtonの設定
+----------------------------------------*/
+
+/* = ボタンセクション */
+section.pagerButton{
+	position: absolute;
+	left: 0px;
+	display: block;
+	width: 100%;
+	height: 15%;
+}
+
+/* = ボタン本体 */
+section.pagerButton > div.pagerButtonBody{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 50%;
+	height: 70%;
+	border-bottom: solid 0.3em #999;
+	border-radius: 0.1em;
+	background-color: #DDD;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+	-webkit-transform: translate(-50%, -50%);
+	   -moz-transform: translate(-50%, -50%);
+	    -ms-transform: translate(-50%, -50%);
+	     -o-transform: translate(-50%, -50%);
+	        transform: translate(-50%, -50%);
+	-webkit-transition: border-bottom .1s ease 0s, top .1s ease 0s;
+	   -moz-transition: border-bottom .1s ease 0s, top .1s ease 0s;
+	    -ms-transition: border-bottom .1s ease 0s, top .1s ease 0s;
+	     -o-transition: border-bottom .1s ease 0s, top .1s ease 0s;
+	        transition: border-bottom .1s ease 0s, top .1s ease 0s;	        
+}
+
+section.pagerButton > div.pagerButtonBody > div.pagerButtonArrow{
+	height: 1.3em;
+	width: 1.3em;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	   -moz-transform: translate(-50%, -50%);
+	    -ms-transform: translate(-50%, -50%);
+	     -o-transform: translate(-50%, -50%);
+	        transform: translate(-50%, -50%);	
+}
+
+section.pagerButton > div.pagerButtonBody > div.pagerButtonArrow > span.pagerButtonArrowBody{
+	display: block;
+	width: 100%;
+	height: 100%;
+	border-top: 	solid 0.0em #CCC;
+	border-left: 	solid 0.0em #CCC;
+	border-right: 	solid 0.3em #CCC;
+	border-bottom: 	solid 0.3em #CCC;
+	border-radius: 0.1em;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+
+/*
+	= 押せるボタン
+		矢印の色を変える
+*/
+section.pagerButton.clickable > div.pagerButtonBody{
+	cursor: pointer;
+}
+
+section.pagerButton.clickable > div.pagerButtonBody > div.pagerButtonArrow > span.pagerButtonArrowBody{
+	border-color: #333;
+}
+
+section.pagerButton.clickable > div.pagerButtonBody:active{
+	-webkit-transition: border-bottom .25s ease 0s, top .25s ease 0s;
+	   -moz-transition: border-bottom .25s ease 0s, top .25s ease 0s;
+	    -ms-transition: border-bottom .25s ease 0s, top .25s ease 0s;
+	     -o-transition: border-bottom .25s ease 0s, top .25s ease 0s;
+	        transition: border-bottom .25s ease 0s, top .25s ease 0s;
+	border-bottom-width: 0.1em;
+}
+
+/*
+	= 戻るボタン
+		ページの一番上に表示
+*/
+section.pagerButton.prevPagerButton{
+	top: 0;
+}
+
+section.pagerButton.prevPagerButton > div.pagerButtonBody > div.pagerButtonArrow > span.pagerButtonArrowBody{
+	-webkit-transform: translate(0, 25%) rotate(-135deg);
+	   -moz-transform: translate(0, 25%) rotate(-135deg);
+	    -ms-transform: translate(0, 25%) rotate(-135deg);
+	     -o-transform: translate(0, 25%) rotate(-135deg);
+	        transform: translate(0, 25%) rotate(-135deg);
+}
+
+/*
+	= 次へボタン
+		ページの一番下に表示
+*/
+section.pagerButton.nextPagerButton{
+	bottom : 0px;
+}
+
+section.pagerButton.nextPagerButton > div.pagerButtonBody > div.pagerButtonArrow > span.pagerButtonArrowBody{
+	-webkit-transform: translate(0, -25%) rotate(45deg);
+	   -moz-transform: translate(0, -25%) rotate(45deg);
+	    -ms-transform: translate(0, -25%) rotate(45deg);
+	     -o-transform: translate(0, -25%) rotate(45deg);
+	        transform: translate(0, -25%) rotate(45deg);
+}
+/*======================================*/

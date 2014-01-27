@@ -1,0 +1,121 @@
+/*
+// = visitor.selecterButtons.css
+// - 説明
+// 		~ 
+// - 文字コード
+// 		~ UTF-8
+// - 参照されるファイル
+//		~ visitor.html
+// - 作成者
+//		~ ヨコヤマタク
+// 		~ B2266@oic.jp
+// - 最終更新日
+//		~ 2013-12-06
+*/
+
+/*========================================
+	文字コードの宣言
+----------------------------------------*/
+@charset 'utf-8';
+
+/*========================================
+	section.selecterButtonsの設定
+----------------------------------------*/
+
+section.selecterButtons{
+	width: 100%;
+	height: 100%;
+	display: block;
+	position: absolute;
+	z-index: 1000;
+	top: 0;
+	left: 0;
+}
+
+section.selecterButtons > section.selecterButton{
+	display: block;
+	width: 10%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+}
+
+section.selecterButtons > section.selecterButton.nextSelecterButton{
+	right: 0;
+}
+
+section.selecterButtons > section.selecterButton.prevSelecterButton{
+	left: 0;
+}
+
+section.selecterButtons > section.selecterButton > div.selecterButtonBody{
+	cursor: pointer;
+	width: 100%;
+	height: 80%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	   -moz-transform: translate(-50%, -50%);
+	    -ms-transform: translate(-50%, -50%);
+	     -o-transform: translate(-50%, -50%);
+	        transform: translate(-50%, -50%);
+	background-color: rgba(0,0,0,0.1);
+}
+
+section.selecterButtons > section.selecterButton.clickable > div.selecterButtonBody{
+	background-color: rgba(0,0,0,0.5);
+}
+
+section.selecterButtons > section.selecterButton.clickable > div.selecterButtonBody:active{
+	background-color: rgba(0,0,0,0.75);
+}
+
+section.selecterButtons > section.selecterButton > div.selecterButtonBody > div.selecterButtonArrow{
+	width: 1.0em;
+	height: 1.0em;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	   -moz-transform: translate(-50%, -50%);
+	    -ms-transform: translate(-50%, -50%);
+	     -o-transform: translate(-50%, -50%);
+	        transform: translate(-50%, -50%);
+}
+
+section.selecterButtons > section.selecterButton > div.selecterButtonBody > div.selecterButtonArrow > span.selecterButtonArrowBody{
+	display: block;
+	width: 100%;
+	height: 100%;
+	border-top: 	solid 0.0em #CCC;
+	border-left: 	solid 0.0em #CCC;
+	border-right: 	solid 0.3em #CCC;
+	border-bottom: 	solid 0.3em #CCC;
+	border-radius: 0.1em;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+
+section.selecterButtons > section.selecterButton.clickable > div.selecterButtonBody > div.selecterButtonArrow > span.selecterButtonArrowBody{
+	border-color: #EEE;
+}
+
+section.selecterButtons > section.selecterButton.nextSelecterButton > div.selecterButtonBody > div.selecterButtonArrow > span.selecterButtonArrowBody{
+		-webkit-transform: translate(-25%, 0) rotate(-45deg);
+		   -moz-transform: translate(-25%, 0) rotate(-45deg);
+		    -ms-transform: translate(-25%, 0) rotate(-45deg);
+		     -o-transform: translate(-25%, 0) rotate(-45deg);
+		        transform: translate(-25%, 0) rotate(-45deg);
+}
+
+section.selecterButtons > section.selecterButton.prevSelecterButton > div.selecterButtonBody > div.selecterButtonArrow > span.selecterButtonArrowBody{
+		-webkit-transform: translate(25%, 0) rotate(135deg);
+		   -moz-transform: translate(25%, 0) rotate(135deg);
+		    -ms-transform: translate(25%, 0) rotate(135deg);
+		     -o-transform: translate(25%, 0) rotate(135deg);
+		        transform: translate(25%, 0) rotate(135deg);
+}
+
+/*======================================*/
