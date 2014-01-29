@@ -1,8 +1,6 @@
 // even.constants.js
 
 // ==
-var UPDATA_INTERVAL	= 200;
-// ==
 var STATUS_IMMATURE	= 0;
 var STATUS_ACTIVE	= 1;
 var STATUS_LEFT		= 2;

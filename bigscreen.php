@@ -49,10 +49,15 @@
         <link rel="stylesheet" href="css/even/even.fontsize.css">
     </head>
 <body>
-<article id="bigscreenApp" data-eventCode='<?php echo $eventCode; ?>'>
-	<section class="layer" id="hostLayer2"></section>
-	<section class="layer" id="visitorLayer"></section>
-	<section class="layer" id="hostLayer1"></section>	
+<article id="bigscreenApp" data-status="suspension" data-eventCode='<?php echo $eventCode; ?>'>
+    <section id="laeyers">
+    	<section class="layer" id="hostLayer2"></section>
+    	<section class="layer" id="visitorLayer"></section>
+    	<section class="layer" id="hostLayer1"></section>	
+    </section>
+    <section id="un_active">
+        <h1></h1>
+    </section>
 </article>
 <?php
         // イベントに登録されたリストを取得
