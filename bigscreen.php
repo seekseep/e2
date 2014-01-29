@@ -1,7 +1,7 @@
 <?php
 
     // 文字コード指定
-    header("Content-Type: text/html;charset=itf-8");
+    header("Content-Type: text/html;charset=utf-8");
 
     // イベントコード
     $eventCode = $_GET['eventCode'];
