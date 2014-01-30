@@ -1,26 +1,26 @@
 // ====================================================================================================
-// MESSAGE
+// MESSAGE(1000)
 // ==
 // ビッグスクリーン上で動くメッセージ
 // ====================================================================================================
 // メッセージオブジェクトが共通で使う定数
 // ==
-var STATUS_IMMATURE	= 0;
-var STATUS_ACTIVE	= 1;
-var STATUS_DEATH	= 3;
-var STATUS_PHOENIX	= 4;
+var STATUS_IMMATURE	= 1000;
+var STATUS_ACTIVE	= 1001;
+var STATUS_DEATH	= 1002;
+var STATUS_KUMAMUSHI= 1003;
 // ==
 var SPEED_SLOW		= 1000;
 var SPEED_MIDDLE	= 500;
 // == 
-var COMMAND_STAY		= 1;
-var COMMAND_MOVE 		= 2;
-var COMMAND_RESIZE 		= 3;
-var COMMAND_OPACITY 	= 4;
-var COMMAND_REMOVE 		= 5;
-var COMMAND_APPEAR 		= 6;
-var COMMAND_DISAPPEAR 	= 7;
-var COMMAND_CSS 		= 8;
+var COMMAND_STAY		= 1101;
+var COMMAND_MOVE 		= 1102;
+var COMMAND_RESIZE 		= 1103;
+var COMMAND_OPACITY 	= 1104;
+var COMMAND_REMOVE 		= 1105;
+var COMMAND_APPEAR 		= 1106;
+var COMMAND_DISAPPEAR 	= 1107;
+var COMMAND_CSS 		= 1108;
 // ====================================================================================================
 
 // メッセージオブジェクト
@@ -66,7 +66,7 @@ message_prototype.stay 				=	function(o){
 												o.time = o.time - 1;
 												this.wedgeMessageCommand(o);
 											}
-											
+
 										};
 
 // メッセージの要素を削除する。ステータスを書き変える。
