@@ -1,3 +1,6 @@
+
+
+
 function createHostMessage(o){
 
 	// message-body の作成
