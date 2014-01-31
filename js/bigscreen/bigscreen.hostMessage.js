@@ -354,134 +354,124 @@ hostMessage_prototype.appear			= 	function(o){
 
 												var transitionP = "";
 
-												// フェードイン
-												if(o.fadeIn){
 
-													var sec;
-													switch(o.fadeIn.speed){
-														case SPEED_SLOW 	: sec = ' 1s'; 		break;
-														case SPEED_MIDDLE	: sec = ' .5s';		break;
-														case SPEED_HIGH		: sec = ' .25s'; 	break;
-														default				: sec = ' 0s';
-													}
-
-													var del;
-													switch(o.fadeIn.delay){
-														case DELAY_NONE		: del = ' 0s'; 		break;
-														case DELAY_SHORT	: del = ' .25s'; 	break;
-														case DELAY_MIDDLE	: del = ' .5s'; 	break;
-														case DELAY_LONG		: del = ' 1s'; 		break;
-														default 			: del = ' 0s';
-													}
-
-													// 透明にする
-													before.opacity = 0;
-													// del 秒後に sec秒かけて変化する
-													transitionP += "opacity" + sec + ' ease' + del + ',';
-
+												// フェードインエフェクトの値の指定
+												// エフェクトのない場合は変化の時間を0sにする
+												var feadInSec;
+												switch(o.fadeIn.speed){
+													case SPEED_SLOW 	: feadInSec = 1.0; 	break;
+													case SPEED_MIDDLE	: feadInSec = 0.5;	break;
+													case SPEED_HIGH		: feadInSec = 0.25; break;
+													default				: feadInSec = 0.0;
 												}
+
+												var feadInDel;
+												switch(o.fadeIn.delay){
+													case DELAY_NONE		: feadInDel = 0.0; 	break;
+													case DELAY_SHORT	: feadInDel = 0.25; break;
+													case DELAY_MIDDLE	: feadInDel = 0.5; 	break;
+													case DELAY_LONG		: feadInDel = 1.0; 	break;
+													default 			: feadInDel = 0.0;
+												}
+
+												// 透明にする
+												before.opacity = 0;
+
+												// del 秒後に sec秒かけて変化する
+												transitionP += "opacity" + feadInSec + 's' + ' ease' + feadInDel + 's,';
+
 
 												// スライドイン
-												if(o.slideIn){
-													var sec;
-													switch(o.slideIn.speed){
-														case SPEED_SLOW		: sec = ' 1s'; 		break;
-														case SPEED_MIDDLE	: sec = ' .5s';		break;
-														case SPEED_HIGH		: sec = ' .25s'; 	break;
-														default				: sec = ' 0s';
-													}
-
-													var del;
-													switch(o.slideIn.delay){
-														case DELAY_NONE		: del = ' 0s'; 		break;
-														case DELAY_SHORT	: del = ' .25s'; 	break;
-														case DELAY_MIDDLE	: del = ' .5s'; 	break;
-														case DELAY_LONG		: del = ' 1s'; 		break;
-														default				: del = ' 0s';
-													}
-
-													var dir = 1;
-													var rate;													
-
-													switch(o.slideIn.length){
-														case LENGTH_NEAR 	: rate = 1; break;
-														case LENGTH_MIDDLE	: rate = 2; break;
-														case LENGTH_FOR		: rate = 3; break;
-													}
-
-													var direction 	= o.slideIn.direction;
-													if(direction == DIRECTION_UP || direction == DIRECTION_DOWN){
-
-														if(direction == DIRECTION_DOWN){
-															dir = -1;
-														}
-
-														console.log(100, rate, dir, '%');
-														before.top 	= 100 * rate * dir + '%';
-														transitionP += "top" 	+ sec 	+ ' ease' 	+ del 	+ ',';
-
-													}else if(direction == DIRECTION_LEFT || direction == DIRECTION_RIGHT){
-
-														if(direction == DIRECTION_LEFT){
-															dir = -1;
-														}
-														
-														before.left = 100 * rate * dir + '%';
-														transitionP += "left" 	+ sec 	+ ' ease' 	+ del 	+ ',';
-									
-													}
+												var slideInSec;
+												switch(o.slideIn.speed){
+													case SPEED_SLOW		: slideInSec = 1.0; 	break;
+													case SPEED_MIDDLE	: slideInSec = 0.5;		break;
+													case SPEED_HIGH		: slideInSec = 0.25; 	break;
+													default				: slideInSec = 0.0;
 												}
 
+												var slideInDel;
+												switch(o.slideIn.delay){
+													case DELAY_NONE		: slideInDel = 0.0; 	break;
+													case DELAY_SHORT	: slideInDel = 0.25; 	break;
+													case DELAY_MIDDLE	: slideInDel = 0.5; 	break;
+													case DELAY_LONG		: slideInDel = 1.0; 	break;
+													default				: slideInDel = 0.0;
+												}
+
+												var dir = 1;
+												var rate;													
+
+												switch(o.slideIn.length){
+													case LENGTH_NEAR 	: rate = 1; break;
+													case LENGTH_MIDDLE	: rate = 2; break;
+													case LENGTH_FOR		: rate = 3; break;
+													default	: rate = 0;
+												}
+
+												var direction 	= o.slideIn.direction;
+												if(direction == DIRECTION_UP || direction == DIRECTION_DOWN){ // Y軸方向のスライド
+
+													if(direction == DIRECTION_DOWN){
+														dir = -1;
+													}
+
+
+													before.top 	= 100 * rate * dir + '%';
+													transitionP += 'top' + slideInSec + 's ' + ' ease' + slideInDel + 's,';
+													transitionP += 'left 0s ease 0s,';
+
+												}else if(direction == DIRECTION_LEFT || direction == DIRECTION_RIGHT){
+
+													if(direction == DIRECTION_LEFT){
+														dir = -1;
+													}
+													
+													before.left = 100 * rate * dir + '%';
+													transitionP += 'top 0s ease 0s,';
+													transitionP += "left" 	+ slideInSec + 's' + ' ease' + slideInDel + 's,';
+												}else{
+													transitionP += 'top 0s ease 0s,';
+													transitionP += 'left 0s ease 0s,';
+												}
 
 												// サイジングイン
-												if(o.sizingIn){
-
-													var sec;
-													switch(o.sizingIn.speed){
-														case SPEED_SLOW 	: sec = ' 1s'; 		break;
-														case SPEED_MIDDLE	: sec = ' .5s';		break;
-														case SPEED_HIGH		: sec = ' .25s'; 	break;
-														default				: sec = ' 0s';
-													}
-
-													var del;
-													switch(o.sizingIn.delay){
-														case DELAY_NONE		: del = ' 0s'; 		break;
-														case DELAY_SHORT	: del = ' .25s'; 	break;
-														case DELAY_MIDDLE	: del = ' .5s'; 	break;
-														case DELAY_LONG		: del = ' 1s'; 		break;
-														default 			: del = ' 0s';
-													}
-
-													var size;
-													switch(o.sizingIn.size){
-														case SIZE_MIN 		: size = '0%';		break;
-														case SIZE_SMALL		: size = '50%'; 	break;
-														case SIZE_LARGE		: size = '200%'; 	break;
-														case SIZE_MAX		: size = '400%';    break;
-													}
-
-													before.width 	= size;
-													before.height 	= size;
-													transitionP += " width" 	+ sec 	+ ' ease' 	+ del 	+ ',';
-													transitionP += " height" 	+ sec 	+ ' ease' 	+ del 	+ ',';
-
+												var sizingInSec;
+												switch(o.sizingIn.speed){
+													case SPEED_SLOW 	: sizingInSec = 1.0; 	break;
+													case SPEED_MIDDLE	: sizingInSec = 0.5;	break;
+													case SPEED_HIGH		: sizingInSec = 0.25; 	break;
+													default				: sizingInSec = 0.0;
 												}
 
-												// transitionが登録されている場合
-												if(transitionP != ""){
-
-													// 最後のカンマを取り除く
-													transitionP = transitionP.slice(0, -1);
-
-													// 各ベンダープリフェックスに対応してプロパティを定義
-													$('#' + this.id + ' .mbody').css('-webkit-transition', transitionP);
-													$('#' + this.id + ' .mbody').css('-moz-transition', transitionP);
-													$('#' + this.id + ' .mbody').css('-ms-transition', transitionP);
-													$('#' + this.id + ' .mbody').css('-o-transition', transitionP);
-													$('#' + this.id + ' .mbody').css('transition', transitionP);
-
+												var sizingInDel;
+												switch(o.sizingIn.delay){
+													case DELAY_NONE		: sizingInDel = 0.0; 	break;
+													case DELAY_SHORT	: sizingInDel = 0.25; 	break;
+													case DELAY_MIDDLE	: sizingInDel = 0.5; 	break;
+													case DELAY_LONG		: sizingInDel = 1.0; 	break;
+													default 			: sizingInDel = 0.0;
 												}
+
+												var sizingInSize;
+												switch(o.sizingIn.size){
+													case SIZE_MIN 		: sizingInSize = '0%';		break;
+													case SIZE_SMALL		: sizingInSize = '50%'; 	break;
+													case SIZE_LARGE		: sizingInSize = '200%';	break;
+													case SIZE_MAX		: sizingInSize = '400%';  	break;
+												}
+
+												before.width 	= sizingInSize;
+												before.height 	= sizingInSize;
+												transitionP += " width"  + sizingInSec + 's' + ' ease' + sizingInDel + 's,';
+												transitionP += " height" + sizingInSec + 's' + ' ease' + sizingInDel + 's';
+
+												// 各ベンダープリフェックスに対応してプロパティを定義
+												$('#' + this.id + ' .mbody').css('-webkit-transition', transitionP);
+												$('#' + this.id + ' .mbody').css('-moz-transition', transitionP);
+												$('#' + this.id + ' .mbody').css('-ms-transition', transitionP);
+												$('#' + this.id + ' .mbody').css('-o-transition', transitionP);
+												$('#' + this.id + ' .mbody').css('transition', transitionP);
 
 												// 変化前のCSSを定義
 												$('#' + this.id + ' .mbody').css(before);
@@ -502,164 +492,171 @@ hostMessage_prototype.appear			= 	function(o){
 
 hostMessage_prototype.dispappear		= 	function(o){
 
-												var after 	= new Object();
-
-												// アニメーションの時間
-												var animationTime = 0;
-
-												// transitionプロパティ
-												// ベンダープリフェックスに対応するため、変化する値とは別で指定する
-												var transitionP = "";
-
-												// 消滅時のアニメーションの終了値
+												// 消滅後の状態
+												var after 		= new Object();
 												after = {
-															'top '		: 0,
-															'left'		: 0,
-															'opacity'	: 1,
-															'width'		: '100%',
-															'height'	: '100%'
+															top : 0,
+															left: 0,
+															opacity: 1,
+															width: '100%',
+															height: '100%'
 														}
 
-												// フェードアウト　
-												if(o.fadeOut){
+												var animatingTime 	= 0;
+												var transitionP 	= "";
 
-													// アニメーション時間
-													var sec;
-													switch(o.fadeOut.speed){
-														case SPEED_SLOW 	: sec = ' 1s'; 		break;
-														case SPEED_MIDDLE	: sec = ' .5s';		break;
-														case SPEED_HIGH		: sec = ' .25s'; 	break;
-														default				: sec = ' 0s';
-													}
 
-													// 待機時間
-													var del;
-													switch(o.fadeOut.delay){
-														case DELAY_NONE		: del = ' 0s'; 		break;
-														case DELAY_SHORT	: del = ' .25s'; 	break;
-														case DELAY_MIDDLE	: del = ' .5s'; 	break;
-														case DELAY_LONG		: del = ' 1s'; 		break;
-														default 			: del = ' 0s';
-													}
-
-													// 最大値の確認
-													if(sec + del > animationTime){
-														animationTime = sec + del;
-													}
-
-													// 透明にする
-													opacity.opacity = 0;
-
-													// del 秒後に sec秒かけて変化する
-													transitionP += "opacity" + sec + ' ease' + del + ',';
-
+												// フェードインエフェクトの値の指定
+												// エフェクトのない場合は変化の時間を0sにする
+												var feadOutSec;
+												switch(o.fadeOut.speed){
+													case SPEED_SLOW 	: feadOutSec = 1.0; 	break;
+													case SPEED_MIDDLE	: feadOutSec = 0.5;		break;
+													case SPEED_HIGH		: feadOutSec = 0.25; 	break;
+													default				: feadOutSec = 0.0;
 												}
 
-												// スライドアウト
-												if(o.slideOut){
+												var feadOutDel;
+												switch(o.fadeOut.delay){
+													case DELAY_NONE		: feadOutDel = 0.0; 	break;
+													case DELAY_SHORT	: feadOutDel = 0.25; 	break;
+													case DELAY_MIDDLE	: feadOutDel = 0.5; 	break;
+													case DELAY_LONG		: feadOutDel = 1.0; 	break;
+													default 			: feadOutDel = 0.0;
+												}
 
-													// アニメーション時間
-													var sec;
-													switch(o.slideOut.speed){
-														case SPEED_SLOW		: sec = ' 1s'; 		break;
-														case SPEED_MIDDLE	: sec = ' .5s';		break;
-														case SPEED_HIGH		: sec = ' .25s'; 	break;
-														default				: sec = ' 0s';
+												// 透明にする
+												before.opacity = 0;
+
+												// del 秒後に sec秒かけて変化する
+												transitionP += "opacity" + feadOutSec + ' ease' + feadOutDel + ',';
+
+												// アニメーション時間の更新
+												if(feadOutSec + feadOutDel > animatingTime){
+													animatingTime = feadOutSec + feadOutDel;
+												}
+
+
+												// スライドイン
+												var slideOutSec;
+												switch(o.slideOut.speed){
+													case SPEED_SLOW		: slideOutSec = 1.0; 	break;
+													case SPEED_MIDDLE	: slideOutSec = 0.5;	break;
+													case SPEED_HIGH		: slideOutSec = 0.25; 	break;
+													default				: slideOutSec = 0.0;
+												}
+
+												var slideOutDel;
+												switch(o.slideOut.delay){
+													case DELAY_NONE		: slideOutDel = 0.0; 	break;
+													case DELAY_SHORT	: slideOutDel = 0.25; 	break;
+													case DELAY_MIDDLE	: slideOutDel = 0.5; 	break;
+													case DELAY_LONG		: slideOutDel = 1.0; 	break;
+													default				: slideOutDel = 0.0;
+												}
+
+												var dir = 1;
+												var rate;													
+
+												switch(o.slideOut.length){
+													case LENGTH_NEAR 	: rate = 1; break;
+													case LENGTH_MIDDLE	: rate = 2; break;
+													case LENGTH_FOR		: rate = 3; break;
+													default	: rate = 0;
+												}
+
+												var direction 	= o.slideOut.direction;
+												if(direction == DIRECTION_UP || direction == DIRECTION_DOWN){ // Y軸方向のスライド
+
+													if(direction == DIRECTION_DOWN){
+														dir = -1;
 													}
 
-													// 
-													var del;
-													switch(o.slideOut.delay){
-														case DELAY_NONE		: del = ' 0s'; 		break;
-														case DELAY_SHORT	: del = ' .25s'; 	break;
-														case DELAY_MIDDLE	: del = ' .5s'; 	break;
-														case DELAY_LONG		: del = ' 1s'; 		break;
-														default				: del = ' 0s';
+
+													before.top 	= 100 * rate * dir + '%';
+													transitionP += 'top' + slideOutSec + ' ease' + slideOutDel + ',';
+													transitionP += 'left 0s ease 0s,';
+
+												}else if(direction == DIRECTION_LEFT || direction == DIRECTION_RIGHT){
+
+													if(direction == DIRECTION_LEFT){
+														dir = -1;
 													}
+													
+													before.left = 100 * rate * dir + '%';
+													transitionP += 'top 0s ease 0s,';
+													transitionP += "left" 	+ slideOutSec + ' ease' 	+ slideOutDel 	+ ',';
+												}else{
+													transitionP += 'top 0s ease 0s,';
+													transitionP += 'left 0s ease 0s,';
+												}
 
-													// 最大値の確認
-													if(sec + del > animationTime){
-														animationTime = sec + del;
-													}
-
-													var dir = 1;
-													var rate;													
-
-													// スライドアウト先の距離
-													switch(o.slideOut.length){
-														case LENGTH_NEAR 	: rate = 1; break;
-														case LENGTH_MIDDLE	: rate = 2; break;
-														case LENGTH_FOR		: rate = 3; break;
-													}
-
-													// スライドアウトの方向
-													var direction 	= o.slideOut.direction;
-													if(direction == DIRECTION_UP || direction == DIRECTION_DOWN){
-
-														if(direction == DIRECTION_DOWN){
-															dir = -1;
-														}
-
-														console.log(100, rate, dir, '%');
-														before.top 	= 100 * rate * dir + '%';
-														transitionP += "top" 	+ sec 	+ ' ease' 	+ del 	+ ',';
-
-													}else if(direction == DIRECTION_LEFT || direction == DIRECTION_RIGHT){
-
-														if(direction == DIRECTION_LEFT){
-															dir = -1;
-														}
-														
-														before.left = 100 * rate * dir + '%';
-														transitionP += "left" 	+ sec 	+ ' ease' 	+ del 	+ ',';
-									
-													}
+												// アニメーション時間の更新
+												if(slideOutSec + slideOutDel > animatingTime){
+													animatingTime = slideOutSec + slideOutDel;
 												}
 
 												// サイジングアウト
-												if(o.sizingOut){
-
-													// アニメーション時間
-													var sec;
-													switch(o.sizingOut.speed){
-														case SPEED_SLOW 	: sec = ' 1s'; 		break;
-														case SPEED_MIDDLE	: sec = ' .5s';		break;
-														case SPEED_HIGH		: sec = ' .25s'; 	break;
-														default				: sec = ' 0s';
-													}
-
-													// 待機時間
-													var del;
-													switch(o.sizingOut.delay){
-														case DELAY_NONE		: del = ' 0s'; 		break;
-														case DELAY_SHORT	: del = ' .25s'; 	break;
-														case DELAY_MIDDLE	: del = ' .5s'; 	break;
-														case DELAY_LONG		: del = ' 1s'; 		break;
-														default 			: del = ' 0s';
-													}
-
-													// 最大値の確認
-													if(sec + del > animationTime){
-														animationTime = sec + del;
-													}
-
-													// 変化の大きさ
-													var size;
-													switch(o.sizingOut.size){
-														case SIZE_MIN 		: size = '0%';		break;
-														case SIZE_SMALL		: size = '50%'; 	break;
-														case SIZE_LARGE		: size = '200%'; 	break;
-														case SIZE_MAX		: size = '400%';    break;
-													}
-
-													before.width 	= size;
-													before.height 	= size;
-													transitionP += " width" 	+ sec 	+ ' ease' 	+ del 	+ ',';
-													transitionP += " height" 	+ sec 	+ ' ease' 	+ del 	+ ',';
-
+												var sizingOutSec;
+												switch(o.sizingOut.speed){
+													case SPEED_SLOW 	: sizingOutSec = 1.0; 	break;
+													case SPEED_MIDDLE	: sizingOutSec = 0.5;	break;
+													case SPEED_HIGH		: sizingOutSec = 0.25; 	break;
+													default				: sizingOutSec = 0.0;
 												}
 
+												var sizingOutDel;
+												switch(o.sizingOut.delay){
+													case DELAY_NONE		: sizingOutDel = 0.0; 	break;
+													case DELAY_SHORT	: sizingOutDel = 0.25; 	break;
+													case DELAY_MIDDLE	: sizingOutDel = 0.5; 	break;
+													case DELAY_LONG		: sizingOutDel = 1.0; 	break;
+													default 			: sizingOutDel = 0.0;
+												}
 
+												var sizingOutSize;
+												switch(o.sizingIn.size){
+													case SIZE_MIN 		: sizingOutSize = '0%';		break;
+													case SIZE_SMALL		: sizingOutSize = '50%'; 		break;
+													case SIZE_LARGE		: sizingOutSize = '200%';	 	break;
+													case SIZE_MAX		: sizingOutSize = '400%';  	break;
+												}
+
+												before.width 	= sizingOutSize;
+												before.height 	= sizingOutSize;
+												transitionP += " width"  + sizingOutSec + ' ease' + sizingOutDel;
+												transitionP += " height" + sizingOutSec + ' ease' + sizingOutDel;
+
+												// アニメーション時間の更新
+												if(sizingOutSec + sizingOutDel > animatingTime){
+													animatingTime = sizingOutSec + sizingOutDel;
+												}
+
+												// 各ベンダープリフェックスに対応してプロパティを定義
+												$('#' + this.id + ' .mbody').css('-webkit-transition', transitionP);
+												$('#' + this.id + ' .mbody').css('-moz-transition', transitionP);
+												$('#' + this.id + ' .mbody').css('-ms-transition', transitionP);
+												$('#' + this.id + ' .mbody').css('-o-transition', transitionP);
+												$('#' + this.id + ' .mbody').css('transition', transitionP);
+
+												
+												// 要素を不透明にする
+												$('#' + this.id).css('opacity', 1);
+
+												// すべてのアニメーションが終わった瞬間に透明にする
+												transitionP = "opacity 0s linear " + animatingTime + 'sec';
+
+												$('#' + this.id).css('-webkit-transition', transitionP);
+												$('#' + this.id).css('-moz-transition', transitionP);
+												$('#' + this.id).css('-ms-transition', transitionP);
+												$('#' + this.id).css('-o-transition', transitionP);
+												$('#' + this.id).css('transition', transitionP);
+
+												// 変化前のCSSを定義
+												$('#' + this.id + ' .mbody').css(after);
+												$('#' + this.id).css('opacity', 0);
+												
+												this.status = STATUS_DEATH;
 											}										
 
 // ====================================================================================================
