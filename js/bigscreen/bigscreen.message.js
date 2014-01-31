@@ -10,6 +10,8 @@ var STATUS_ACTIVE		= 2;
 var STATUS_ANIMATING	= 3;
 var STATUS_DEATH		= 4;
 var STATUS_KUMAMUSHI	= 5;
+// == 
+var MCALL_STAY			= 0;
 // ====================================================================================================
 
 // メッセージオブジェクト
@@ -59,14 +61,14 @@ message_prototype.updateMessageCommand = function(){};
 message_prototype.stay 				=	function(o){
 											// timeオプションが指定されている場合
 											if(o.time){
-
 												if(!o.time == 0){
 													// 回数指定の場合は1減らして挿入
 													if(o.time > 0){
 														o.time = Math.floor(o.time - 1);
 													}
 													this.wedgeMessageCommand(o);
-												}											}
+												}
+											}
 										};
 
 // メッセージの要素を削除する。ステータスを書き変える。

@@ -4,8 +4,8 @@
 // 管理者側がPCを用いて送信できるメッセージ
 // 行える操作は削除のみ
 // ====================================================================================================
-var MCALL_APPEAR 		= 6;
-var MCALL_DISAPPEAR 	= 7;
+var MCALL_APPEAR 		= 5;
+var MCALL_DISAPPEAR 	= 6;
 // ==
 var DIRECTION_UP 		= 1;
 var DIRECTION_DOWN 		= 2;
@@ -86,7 +86,7 @@ var TEXTALIGN_RIGHT			= 3;
 											'speed'		: SPEED_SLOW or SPEED_MIDDLE or SPEED_HIGH
 											'length'	: LENGTH_NEAR or LENGTH_MIDDLE or LENGTH_FAR
 										},
-						'feadIn'	: {
+						'fadeIn'	: {
 											'speed'		: SPEED_SLOW or SPEED_MIDDLE or SPEED_HIGH
 											'delay' 	: DELAY_NONE or DELAY_SHORT	or DELAY_MIDDLE
 										},
@@ -107,7 +107,7 @@ var TEXTALIGN_RIGHT			= 3;
 											'speed'		: SPEED_SLOW or SPEED_MIDDLE or SPEED_HIGH
 											'length'	: LENGTH_NEAR or LENGTH_MIDDLE or LENGTH_FAR
 										},
-						'feadOut'	: {
+						'fadeOut'	: {
 											'speed'		: SPEED_SLOW or SPEED_MIDDLE or SPEED_HIGH
 											'delay' 	: DELAY_NONE or DELAY_SHORT	or DELAY_MIDDLE
 										},
@@ -129,10 +129,12 @@ hostMessage_prototype.__proto__ 	= 	message_prototype;
 // アップデートコマンド
 hostMessage_prototype.updateMessageCommand = function(){
 
-													if(this.status != STATUS_DEATH){
+													if(this.status == STATUS_ACTIVE){
 														// キューからメッセージコマンドを取り出す
 														var option = this.getMessageCommand();
-														this.call(option);
+														if(option){
+															this.call(option);
+														}
 													}
 
 													// 今の状態を返す
@@ -189,13 +191,17 @@ hostMessage_prototype.born			= 	function(o){
 											this.status = STATUS_ACTIVE;
 
 											// APPEARコマンドを追加
+											o.appear.type =  MCALL_APPEAR;
 											this.addMessageCommand(o.appear);
 
 											// STAYコマンドを追加
+											o.stay.type = MCALL_STAY;
 											if(o.stay.time != 0){
 												this.addMessageCommand(o.stay);
 											}
 
+											// DISAPPEARコマンドの追加
+											o.disappear.type = MCALL_DISAPPEAR;
 											this.addMessageCommand(o.disappear);
 
 											return true;
@@ -203,7 +209,11 @@ hostMessage_prototype.born			= 	function(o){
 
 hostMessage_prototype.setRectMessageElement	= function(o){
 
-												if(o.rType = HMESSAGE_HORIZON){// 水平
+												var ele = $('#' + o.id);
+
+												ele.css('background-color', o.rectColor);
+
+												if(o.rType == HMESSAGE_HORIZON){// 水平
 
 													// サイズの計算
 													var h = window.innerHeight * o.size / 100;
@@ -232,7 +242,7 @@ hostMessage_prototype.setRectMessageElement	= function(o){
 														default 	: break;
 													}
 
-												}else if(o.rType = HMESSAGE_VERTICAL){		// 垂直
+												}else if(o.rType == HMESSAGE_VERTICAL){		// 垂直
 
 													// サイズの計算
 													var w = window.innerHeight * o.size/ 100;
@@ -261,7 +271,7 @@ hostMessage_prototype.setRectMessageElement	= function(o){
 														default 	: break;
 													}
 
-												}else if(o.rType = HMESSAGE_WALL){			// 全面
+												}else if(o.rType == HMESSAGE_WALL){			// 全面
 
 													ele.css({
 														'width' : '100%',
@@ -272,9 +282,12 @@ hostMessage_prototype.setRectMessageElement	= function(o){
 
 												}
 
+
 											}
 
-hostMessage_prototype.bsetPathMessageElement	= function(){
+hostMessage_prototype.setPathMessageElement	= function(){
+
+													var ele = $('#' + o.id);
 
 													// テキストを入れる正方形の一辺の長さ
 													var textBoxLength = (window.innerHeight * o.size / 100) + 'px';
@@ -360,28 +373,28 @@ hostMessage_prototype.appear			= 	function(o){
 
 												// フェードインエフェクトの値の指定
 												// エフェクトのない場合は変化の時間を0sにする
-												var feadInSec;
+												var fadeInSec;
 												switch(o.fadeIn.speed){
-													case SPEED_SLOW 	: feadInSec = 1.0; 	break;
-													case SPEED_MIDDLE	: feadInSec = 0.5;	break;
-													case SPEED_HIGH		: feadInSec = 0.25; break;
-													default				: feadInSec = 0.0;
+													case SPEED_SLOW 	: fadeInSec = 1.0; 	break;
+													case SPEED_MIDDLE	: fadeInSec = 0.5;	break;
+													case SPEED_HIGH		: fadeInSec = 0.25; break;
+													default				: fadeInSec = 0.0;
 												}
 
-												var feadInDel;
+												var fadeInDel;
 												switch(o.fadeIn.delay){
-													case DELAY_NONE		: feadInDel = 0.0; 	break;
-													case DELAY_SHORT	: feadInDel = 0.25; break;
-													case DELAY_MIDDLE	: feadInDel = 0.5; 	break;
-													case DELAY_LONG		: feadInDel = 1.0; 	break;
-													default 			: feadInDel = 0.0;
+													case DELAY_NONE		: fadeInDel = 0.0; 	break;
+													case DELAY_SHORT	: fadeInDel = 0.25; break;
+													case DELAY_MIDDLE	: fadeInDel = 0.5; 	break;
+													case DELAY_LONG		: fadeInDel = 1.0; 	break;
+													default 			: fadeInDel = 0.0;
 												}
 
 												// 透明にする
 												before.opacity = 0;
 
 												// del 秒後に sec秒かけて変化する
-												transitionP += "opacity" + feadInSec + 's' + ' ease' + feadInDel + 's,';
+												transitionP += "opacity" + fadeInSec + 's' + ' ease' + fadeInDel + 's,';
 
 
 												// スライドイン
@@ -408,7 +421,7 @@ hostMessage_prototype.appear			= 	function(o){
 												switch(o.slideIn.length){
 													case LENGTH_NEAR 	: rate = 1; break;
 													case LENGTH_MIDDLE	: rate = 2; break;
-													case LENGTH_FOR		: rate = 3; break;
+													case LENGTH_FAR		: rate = 3; break;
 													default	: rate = 0;
 												}
 
@@ -516,7 +529,7 @@ hostMessage_prototype.appear			= 	function(o){
 											}
 
 
-hostMessage_prototype.dispappear		= 	function(o){
+hostMessage_prototype.disappear		= 	function(o){
 
 												// 消滅後の状態
 												var after 		= new Object();
@@ -534,32 +547,32 @@ hostMessage_prototype.dispappear		= 	function(o){
 
 												// フェードインエフェクトの値の指定
 												// エフェクトのない場合は変化の時間を0sにする
-												var feadOutSec;
+												var fadeOutSec;
 												switch(o.fadeOut.speed){
-													case SPEED_SLOW 	: feadOutSec = 1.0; 	break;
-													case SPEED_MIDDLE	: feadOutSec = 0.5;		break;
-													case SPEED_HIGH		: feadOutSec = 0.25; 	break;
-													default				: feadOutSec = 0.0;
+													case SPEED_SLOW 	: fadeOutSec = 1.0; 	break;
+													case SPEED_MIDDLE	: fadeOutSec = 0.5;		break;
+													case SPEED_HIGH		: fadeOutSec = 0.25; 	break;
+													default				: fadeOutSec = 0.0;
 												}
 
-												var feadOutDel;
+												var fadeOutDel;
 												switch(o.fadeOut.delay){
-													case DELAY_NONE		: feadOutDel = 0.0; 	break;
-													case DELAY_SHORT	: feadOutDel = 0.25; 	break;
-													case DELAY_MIDDLE	: feadOutDel = 0.5; 	break;
-													case DELAY_LONG		: feadOutDel = 1.0; 	break;
-													default 			: feadOutDel = 0.0;
+													case DELAY_NONE		: fadeOutDel = 0.0; 	break;
+													case DELAY_SHORT	: fadeOutDel = 0.25; 	break;
+													case DELAY_MIDDLE	: fadeOutDel = 0.5; 	break;
+													case DELAY_LONG		: fadeOutDel = 1.0; 	break;
+													default 			: fadeOutDel = 0.0;
 												}
 
 												// 透明にする
-												before.opacity = 0;
+												after.opacity = 0;
 
 												// del 秒後に sec秒かけて変化する
-												transitionP += "opacity" + feadOutSec + ' ease' + feadOutDel + ',';
+												transitionP += "opacity" + fadeOutSec + ' ease' + fadeOutDel + ',';
 
 												// アニメーション時間の更新
-												if(feadOutSec + feadOutDel > animatingTime){
-													animatingTime = feadOutSec + feadOutDel;
+												if(fadeOutSec + fadeOutDel > animatingTime){
+													animatingTime = fadeOutSec + fadeOutDel;
 												}
 
 
@@ -587,7 +600,7 @@ hostMessage_prototype.dispappear		= 	function(o){
 												switch(o.slideOut.length){
 													case LENGTH_NEAR 	: rate = 1; break;
 													case LENGTH_MIDDLE	: rate = 2; break;
-													case LENGTH_FOR		: rate = 3; break;
+													case LENGTH_FAR		: rate = 3; break;
 													default	: rate = 0;
 												}
 
@@ -599,7 +612,7 @@ hostMessage_prototype.dispappear		= 	function(o){
 													}
 
 
-													before.top 	= 100 * rate * dir + '%';
+													after.top 	= 100 * rate * dir + '%';
 													transitionP += 'top' + slideOutSec + ' ease' + slideOutDel + ',';
 													transitionP += 'left 0s ease 0s,';
 
@@ -609,7 +622,7 @@ hostMessage_prototype.dispappear		= 	function(o){
 														dir = -1;
 													}
 													
-													before.left = 100 * rate * dir + '%';
+													after.left = 100 * rate * dir + '%';
 													transitionP += 'top 0s ease 0s,';
 													transitionP += "left" 	+ slideOutSec + ' ease' 	+ slideOutDel 	+ ',';
 												}else{
@@ -641,15 +654,15 @@ hostMessage_prototype.dispappear		= 	function(o){
 												}
 
 												var sizingOutSize;
-												switch(o.sizingIn.size){
+												switch(o.sizingOut.size){
 													case SIZE_MIN 		: sizingOutSize = '0%';		break;
 													case SIZE_SMALL		: sizingOutSize = '50%'; 		break;
 													case SIZE_LARGE		: sizingOutSize = '200%';	 	break;
 													case SIZE_MAX		: sizingOutSize = '400%';  	break;
 												}
 
-												before.width 	= sizingOutSize;
-												before.height 	= sizingOutSize;
+												after.width 	= sizingOutSize;
+												after.height 	= sizingOutSize;
 												transitionP += " width"  + sizingOutSec + ' ease' + sizingOutDel;
 												transitionP += " height" + sizingOutSec + ' ease' + sizingOutDel;
 
@@ -690,10 +703,6 @@ hostMessage_prototype.dispappear		= 	function(o){
 											}										
 
 // ====================================================================================================
-// ====================================================================================================
-
-var GROBAL_DEBUG;
-
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
