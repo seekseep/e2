@@ -15,12 +15,41 @@ body{
 	font-family: 'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','メイリオ',Meiryo,'ＭＳ Ｐゴシック',sans-serif;	
 }
 
-html,
-body,
-article#bigscreenApp,
-section.layer
-{
+article#bigscreenApp{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
 
+article#bigscreenApp > *{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	-webkit-transition: top .9s ease 1s;
+	   -moz-transition: top .9s ease 1s;
+	    -ms-transition: top .9s ease 1s;
+	     -o-transition: top .9s ease 1s;
+	        transition: top .9s ease 1s;
+}
+
+article#bigscreenApp[data-status=active] > #laeyers{
+	top: 0;
+}
+
+article#bigscreenApp[data-status=suspension] > #laeyers{
+	top: -100%; 
+}
+
+article#bigscreenApp[data-status=active] > #info{
+	top: 100%;
+}
+
+article#bigscreenApp[data-status=suspension] > #info{
+	top: 0; 
 }
 
 .layer{
@@ -28,6 +57,8 @@ section.layer
 	top: 0;
 	left: 0;
 	font-size: 0.1em;
+	width: 100%;
+	height: 100%;
 }
 
 #hostLayer2{
@@ -40,4 +71,16 @@ section.layer
 
 #hostLayer1{
 	z-index: 100;
+}
+
+#info_message{
+	margin: 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	   -moz-transform: translate(-50%, -50%);
+	    -ms-transform: translate(-50%, -50%);
+	     -o-transform: translate(-50%, -50%);
+	        transform: translate(-50%, -50%);
 }

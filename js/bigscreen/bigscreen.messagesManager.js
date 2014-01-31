@@ -1,93 +1,140 @@
 // ====================================================================================================
+// MESSAGESMANAGER
+// ==
+// メッセージの追加・操作・更新を行う
 // ====================================================================================================
-// メッセージ管理オブジェクト
-var messagesManager_prototype = new Object();
-// addメソッド定義
-messagesManager_prototype.add　= 	function(o){
-										// idの取り出し
-										var id = o.id;
-
-										// 重複の確認
-										if(this.list[id]){										
-											console.log("重複したadd命令です。メッセージオブジェクトの生成ができません。");
-										}else{
-											// メッセージオブジェクトの定義
-											var message = new Object();
-
-											// 管理メッセージのプロトタイプを受け継ぐ
-											message.__proto__  = this.messageProto;
-
-											// メッセージ作成用のオプションに自分の作成先のレイヤーを追加
-											o.layer = this.layer;
-											
-											// BORNメソッドの呼び出し
-											message.born(o);
-
-											// messagesオブジェクトに追加(コマンド受け渡し用)
-											this.list[message.id] = message;
-											// updaterオブジェクトに追加(アップデート用)
-											updater.list[message.id] = message;											
-										}
-									};
-// controlメソッド定義
-messagesManager_prototype.control = function(cmd){
-										var id 		= cmd.id;
-										// 存在確認
-										if(this.list[id]){
-											var option 	= cmd.o;
-											this.list[id].addMessageCommand(option);
-										}
-									}
-// ====================================================================================================
+var MMCALL_ADD		= 1;
+var MMCALL_OPERATE	= 2;
+// == 
+var MMLAYER_HOST1		= 1;
+var MMLAYER_HOST2		= 2;
+var MMLAYER_VISITOR		= 3;
+// ==
+var MMSTATUS_SLEEP		= 0;
+var MMSTATUS_ACTIVE		= 1;
 // ====================================================================================================
 
-// ====================================================================================================
-// ビジターメッセージ管理オブジェクト
-var visitorMessagesManager	= new Object();
+// メッセージマネージャー
+var messagesManager 	= new Object;
 
-// メッセージ管理オブジェクトを受け継ぐ
-visitorMessagesManager.__proto__  	= messagesManager_prototype;
+messagesManager.status 	= MMSTATUS_SLEEP;
 
-// 管理メッセージのプロトタイプの定義
-visitorMessagesManager.messageProto = visitorMessage_prototype;
+// メッセージオブジェクトの更新頻度
+messagesManager.updateInterval = 100;
 
-// 作成先レイヤー名
-visitorMessagesManager.layer 		= 'visitorLayer';
+// メッセージを格納
+messagesManager.list = new Object;
 
-// 管理するメッセージを保存
-visitorMessagesManager.list			= new Object();
-// ====================================================================================================
+messagesManager.idExist = function(id){
+	var m = messagesManager.list[id];
 
-// ====================================================================================================
-// ホストメッセージ管理オブジェクト
-var host1MessagesManager	= new Object();
+	if(m){
+		return true;
+	}else{
+		return false;
+	}
+}
 
-// メッセージ管理オブジェクトを受け継ぐ
-host1MessagesManager.__proto__  	= messagesManager_prototype;
+messagesManager.call = function(o){
 
-// 管理メッセージのプロトタイプの定義
-host1MessagesManager.messageProto 	= hostMessage_prototype;
+	switch(o.mmcall){
+		case MMCALL_ADD 	: this.add(o.cmd); 		break;
+		case MMCALL_OPERATE	: this.operate(o.cmd);	break;
+		default: ;
+	}
 
-// 作成先レイヤー名
-host1MessagesManager.layer 			= 'hostLayer1';
+}
 
-// 管理するメッセージを保存
-host1MessagesManager.list			= new Object();
-// ====================================================================================================
+messagesManager.add 	= function(o){
 
-// ====================================================================================================
-// ホストメッセージ管理オブジェクト
-var host2MessagesManager	= new Object();
+	if(this.idExist(o.id)){
+		console.log('重複したIDです。');
+	}else{
+		var message = new Object();
 
-// メッセージ管理オブジェクトを受け継ぐ
-host2MessagesManager.__proto__  	= messagesManager_prototype;
+		switch(o.layer){
+			case MMLAYER_VISITOR : message.__proto__ = visitorMessage_prototype; break;
+			case MMLAYER_HOST1	:
+			case MMLAYER_HOST2	: message.__proto__ = hostMessage_prototype;	break;
+			default: ;
+		}
 
-// 管理メッセージのプロトタイプの定義
-host2MessagesManager.messageProto 	= hostMessage_prototype;
+		if(!message.born(o)){
+			console.log("BORNメソッドの実行に失敗しました。");
+		}
 
-// 作成先レイヤー名
-host2MessagesManager.layer 			= 'hostLayer2';
+		this.list[message.id] = message;
 
-// 管理するメッセージを保存
-host2MessagesManager.list			= new Object();
-// ====================================================================================================
+	}
+}
+
+messagesManager.operate = function(o){
+	if(!this.idExist(o.id)){
+		console.log('IDが存在しません。');
+	}else{
+		this.list[o.id].addMessageCommand(o);
+	}
+}
+
+messagesManager.update = function(){
+	for(var id in messagesManager.list){
+
+		var m = messagesManager.list[id];
+
+		var r = m.updateMessageCommand();
+
+		if(!r){
+			m.destroy();
+			delete messagesManager.list[id];
+		}
+	}
+}
+
+messagesManager.updateStart = function(){
+	if(!messagesManager.timer){
+		messagesManager.timer = setInterval(messagesManager.update, messagesManager.updateInterval);
+		console.log("更新を開始しました。");
+		return true;
+	}else{
+		console.log("既に更新は始まっています。");
+	}
+}
+
+messagesManager.updateStop = function(){
+	if(messageManager.timer){
+		clearInterval(messageManager.timer);
+		console.log("更新を終了しました。");
+	}else{
+		console.log("更新は始まっていません。");
+	}
+}
+
+messagesManager.start = function(){
+
+	if(!this.status == MMSTATUS_ACTIVE){
+		if(messagesManager.updateStart()){
+			this.status = MMSTATUS_ACTIVE;
+			console.log("MessageManagerを起動しました。");
+		}else{
+			console.log("MessageManagerを起動に失敗しました。");
+		}
+	}else{
+		console.log("MessageManagerは既に起動しています。");
+	}
+
+}
+
+messagesManager.stop = function(){
+
+	if(!this.status == MMSTATUS_ACTIVE){
+		if(messagesManager.updateStop()){
+			this.status = MMSTATUS_SLEEP;
+			console.log("MessageManagerを停止しました。");
+		}else{
+			console.log("MessageManagerの停止に失敗しました。");
+		}
+	}else{
+		console.log("MessageManagerは起動していません。")
+	}
+
+}

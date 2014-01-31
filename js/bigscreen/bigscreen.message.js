@@ -1,33 +1,22 @@
 // ====================================================================================================
-// MESSAGE(1000)
+// MESSAGE
 // ==
 // ビッグスクリーン上で動くメッセージ
 // ====================================================================================================
 // メッセージオブジェクトが共通で使う定数
 // ==
-var STATUS_IMMATURE	= 1000;
-var STATUS_ACTIVE	= 1001;
-var STATUS_DEATH	= 1002;
-var STATUS_KUMAMUSHI= 1003;
-// ==
-var SPEED_SLOW		= 1000;
-var SPEED_MIDDLE	= 500;
-// == 
-var COMMAND_STAY		= 1101;
-var COMMAND_MOVE 		= 1102;
-var COMMAND_RESIZE 		= 1103;
-var COMMAND_OPACITY 	= 1104;
-var COMMAND_REMOVE 		= 1105;
-var COMMAND_APPEAR 		= 1106;
-var COMMAND_DISAPPEAR 	= 1107;
-var COMMAND_CSS 		= 1108;
+var STATUS_IMMATURE		= 1;
+var STATUS_ACTIVE		= 2;
+var STATUS_ANIMATING	= 3;
+var STATUS_DEATH		= 4;
+var STATUS_KUMAMUSHI	= 5;
 // ====================================================================================================
 
 // メッセージオブジェクト
 var message_prototype = new Object();
 
 // 初期のステータスはIMMATURE(未熟)
-message_prototype = STATUS_IMMATURE
+message_prototype.status = STATUS_IMMATURE
 
 // キューに入ったメッセージコマンドを取得する
 message_prototype.getMessageCommand = 	function(){
@@ -36,8 +25,11 @@ message_prototype.getMessageCommand = 	function(){
 
 // キューにメッセージコマンドを追加する
 message_prototype.addMessageCommand = 	function(o){
-											console.log(this.status, STATUS_ACTIVE);
 											if(this.status == STATUS_ACTIVE){
+												this.commandQueue.push(o);
+												return true;
+											}else if(this.status == STATUS_KUMAMUSHI){
+												this.initCommandQueue();
 												this.commandQueue.push(o);
 												return true;
 											}
@@ -54,6 +46,10 @@ message_prototype.wedgeMessageCommand = function(o){
 
 											return this.status;
 										};
+// キューの初期化
+message_prototype.initCommandQueue	= function(){
+											this.commandQueue = new Array();
+										};
 
 // キューに入ったコマンドを実行する
 // アップデートの処理は各メッセージに委ねる
@@ -61,18 +57,25 @@ message_prototype.updateMessageCommand = function(){};
 
 // 何もしないがコマンドが実行される。待機する。
 message_prototype.stay 				=	function(o){
+											// timeオプションが指定されている場合
+											if(o.time){
 
-											if(o.time > 0){
-												o.time = o.time - 1;
-												this.wedgeMessageCommand(o);
-											}
-
+												if(!o.time == 0){
+													// 回数指定の場合は1減らして挿入
+													if(o.time > 0){
+														o.time = Math.floor(o.time - 1);
+													}
+													this.wedgeMessageCommand(o);
+												}											}
 										};
 
 // メッセージの要素を削除する。ステータスを書き変える。
 message_prototype.destroy 			= 	function(){
 											// 要素を取り除く
 											$('#' + this.id).remove();
+
+											// キューをなくす
+											delete this.commandQueue;
 
 											// オブジェクトのステータスをDEATHにする
 											this.status = STATUS_DEATH;

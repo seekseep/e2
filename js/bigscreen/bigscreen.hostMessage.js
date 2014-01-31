@@ -4,56 +4,59 @@
 // 管理者側がPCを用いて送信できるメッセージ
 // 行える操作は削除のみ
 // ====================================================================================================
-var DIRECTION_UP 		= 3001;
-var DIRECTION_DOWN 		= 3002;
-var DIRECTION_RIGHT		= 3003;
-var DIRECTION_LEFT		= 3004;
+var MCALL_APPEAR 		= 6;
+var MCALL_DISAPPEAR 	= 7;
 // ==
-var SPEED_SLOW			= 3011;
-var SPEED_MIDDLE		= 3012;
-var SPEED_HIGH			= 3013;
+var DIRECTION_UP 		= 1;
+var DIRECTION_DOWN 		= 2;
+var DIRECTION_RIGHT		= 3;
+var DIRECTION_LEFT		= 4;
 // ==
-var LENGTH_NEAR			= 3021;
-var LENGTH_MIDDLE		= 3022;
-var LENGTH_FAR			= 3023;
+var SPEED_SLOW			= 1;
+var SPEED_MIDDLE		= 2;
+var SPEED_HIGH			= 3;
 // ==
-var DELAY_NONE			= 3031;
-var DELAY_SHORT			= 3032;
-var DELAY_MIDDLE		= 3033;
-var DELAY_LONG			= 3034;
+var LENGTH_NEAR			= 1;
+var LENGTH_MIDDLE		= 2;
+var LENGTH_FAR			= 3;
 // ==
-var SIZE_MIN			= 3041;
-var SIZE_SMALL			= 3042;
-var SIZE_LARGE			= 3043;
-var SIZE_MAX			= 3044;
+var DELAY_NONE			= 1;
+var DELAY_SHORT			= 2;
+var DELAY_MIDDLE		= 3;
+var DELAY_LONG			= 4;
 // ==
-var HMESSAGE_RECT		= 3101;
-var HMESSAFE_PATH		= 3102;
+var SIZE_MIN			= 1;
+var SIZE_SMALL			= 2;
+var SIZE_LARGE			= 3;
+var SIZE_MAX			= 4;
 // ==
-var HMESSAGE_HORIZON	= 3111;
-var HMESSAGE_VERTICAL	= 3112;
-var HMESSAGE_WALL		= 3113;
+var HMESSAGE_RECT		= 1;
+var HMESSAFE_PATH		= 2;
 // ==
-var BASEPOINT_TOP		= 3121;
-var BASEPOINT_BOTTOM	= 3122;
-var BASEPOINT_LEFT		= 3123;
-var BASEPOINT_RIGHT		= 3124;
-var BASEPOINT_CENTER	= 3125;
-var BASEPOINT_MIDDLE	= 3126;
+var HMESSAGE_HORIZON	= 1;
+var HMESSAGE_VERTICAL	= 2;
+var HMESSAGE_WALL		= 3;
 // ==
-var BASEPOINT_LEFT_TOP		= 3131;
-var BASEPOINT_LEFT_MIDDLE	= 3132;
-var BASEPOINT_LEFT_BOTTOM	= 3133;
-var BASEPOINT_CENTER_TOP	= 3134;
-var BASEPOINT_CENTER_MIDDLE	= 3135;
-var BASEPOINT_CENTER_BOTTOM	= 3136;
-var BASEPOINT_RIGHT_TOP		= 3137;
-var BASEPOINT_RIGHT_MIDDLE	= 3138;
-var BASEPOINT_RIGHT_BOTTOM	= 3139;
+var BASEPOINT_TOP		= 1;
+var BASEPOINT_BOTTOM	= 2;
+var BASEPOINT_LEFT		= 3;
+var BASEPOINT_RIGHT		= 4;
+var BASEPOINT_CENTER	= 5;
+var BASEPOINT_MIDDLE	= 6;
+// ==
+var BASEPOINT_LEFT_TOP		= 1;
+var BASEPOINT_LEFT_MIDDLE	= 2;
+var BASEPOINT_LEFT_BOTTOM	= 3;
+var BASEPOINT_CENTER_TOP	= 4;
+var BASEPOINT_CENTER_MIDDLE	= 5;
+var BASEPOINT_CENTER_BOTTOM	= 6;
+var BASEPOINT_RIGHT_TOP		= 7;
+var BASEPOINT_RIGHT_MIDDLE	= 8;
+var BASEPOINT_RIGHT_BOTTOM	= 9;
 // == 
-var TEXTALIGN_LEFT			= 3141;
-var TEXTALIGN_CENTER		= 3142;
-var TEXTALIGN_RIGHT			= 3143;
+var TEXTALIGN_LEFT			= 1;
+var TEXTALIGN_CENTER		= 2;
+var TEXTALIGN_RIGHT			= 3;
 // ====================================================================================================
 /*	ホストメッセージ
 {
@@ -77,7 +80,7 @@ var TEXTALIGN_RIGHT			= 3143;
 	'textAlign' : TEXTALIGN_LEFT or TEXTALIGN_CENTER or TEXTALIGN_RIGHT
 	'textColor' : '#333',
 	'appear'	: {
-						'type'		: COMMAND_APPEAR,
+						'type'		: MCALL_APPEAR,
 						'slideIn'	: {
 											'direction' : DIRECTION_UP or DIRECTION_DOWN or DIRECTION_RIGHT or DIRECTION_LEFT
 											'speed'		: SPEED_SLOW or SPEED_MIDDLE or SPEED_HIGH
@@ -93,8 +96,12 @@ var TEXTALIGN_RIGHT			= 3143;
 											'delay' 	: DELAY_NONE or DELAY_SHORT or DELAY_MIDDLE or DELAY_LONG
 										}
 					},
+	'stay'		: {
+						'type'	: MCALL_STAY
+						'time'	: -1 or 0 or int
+					},
 	'disappear'	: {
-						'type'		: COMMAND_DISAPPEAR,
+						'type'		: MCALL_DISAPPEAR,
 						'slideOut'	: {
 											'direction' : DIRECTION_UP or DIRECTION_DOWN or DIRECTION_RIGHT or DIRECTION_LEFT
 											'speed'		: SPEED_SLOW or SPEED_MIDDLE or SPEED_HIGH
@@ -132,11 +139,11 @@ hostMessage_prototype.updateMessageCommand = function(){
 													return this.status;
 												};
 // コールメソッド
-visitorMessage_prototype.call 				=	function(o){
+hostMessage_prototype.call 				=	function(o){
 													switch(o.type){
-														case COMMAND_APPEAR		: this.appear(o); break;
-														case COMMAND_DISAPPEAR	: this.disappear(o); break;
-														case COMMAND_STAY		: this.stay(o); break;
+														case MCALL_APPEAR		: this.appear(o); break;
+														case MCALL_DISAPPEAR	: this.disappear(o); break;
+														case MCALL_STAY		: this.stay(o); break;
 														default: ;
 													}
 
@@ -153,16 +160,22 @@ hostMessage_prototype.born			= 	function(o){
 											// 要素の設定
 											var ele = $('<div>')
 														.attr('id', this.id)
-														.addClass('message host')
-														.appendTo('#' + o.layer);
+														.addClass('message host');
+
+											// 要素の挿入
+											switch(o.layer){
+												case MMLAYER_HOST1 : ele.appendTo('#hostLayer1'); break;
+												case MMLAYER_HOST2 : ele.appendTo('#hostLayer2'); break;
+												default : return;
+											}
 
 											// 初期状態は不可視
 											ele.css('display', 'none');
 
 											// 各メッセージタイプの要素の設定
 											switch(o.mType){
-												case 'rect'	: this.setRectMessageElement(o); break;
-												case 'path'	: this.setPathMessageElement(o); break;
+												case HMESSAGE_RECT	: this.setRectMessageElement(o); break;
+												case HMESSAGE_PATH	: this.setPathMessageElement(o); break;
 												default		: ;
 											}
 																							
@@ -172,30 +185,20 @@ hostMessage_prototype.born			= 	function(o){
 											// コマンドキューの作成
 											this.commandQueue = new Array();
 
-											// メッセージコマンドに変更
-											this.type = COMMAND_APPEAR;
+											// ステータスの変更
+											this.status = STATUS_ACTIVE;
 
 											// APPEARコマンドを追加
 											this.addMessageCommand(o.appear);
 
-											// ステータスの書き換え
-											// ステイコマンドの登録
-											if(o.liveTime != -1){
-												// ステータスの変更
-												this.status = STATUS_ACTIVE;
-
-												var cmd = new Obejct();
-
-												// コマンドタイプの定義
-												var cmd.type = COMMAND_STAY;
-
-												// ステイ回数の定義
-												var cmd.time = o.liveTime / updater.interval;
-
-											}else{
-												this.status = STATUS_KUMAMUSHI;
+											// STAYコマンドを追加
+											if(o.stay.time != 0){
+												this.addMessageCommand(o.stay);
 											}
 
+											this.addMessageCommand(o.disappear);
+
+											return true;
 										};
 
 hostMessage_prototype.setRectMessageElement	= function(o){
@@ -206,7 +209,7 @@ hostMessage_prototype.setRectMessageElement	= function(o){
 													var h = window.innerHeight * o.size / 100;
 
 													ele.css({
-														'width'		: 100%,
+														'width'		: '100%',
 														'height'	: h + '%'
 													});
 
@@ -480,13 +483,36 @@ hostMessage_prototype.appear			= 	function(o){
 												$('#' + this.id).css('display', 'block');
 						
 												// メッセージを表示状態に戻す
-												$('#' + this.id).css = {
+												$('#' + this.id + '_mbody').css = {
 																	top : 0,
 																	left: 0,
 																	opacity: 1,
 																	width: '100%',
 																	height: '100%'
 																}
+
+												// transition中のあいだはdisappearコマンドを実行させない為に
+												// animatingにする。
+												this.status = STATUS_ANIMATING;
+
+												// transitionが終わったときにステータスをアクティブにする
+												$('#' + this.id + ' .mbody')
+													.on('webkitTransitionEnd', function(){
+														this.status = STATUS_ACTIVE;
+														$('#' + this.id + ' .mbody').off('webkitTransitionEnd');
+													});
+												$('#' + this.id + ' .mbody').on('mozTransitionEnd', function(){
+														this.status = STATUS_ACTIVE;
+														$('#' + this.id + ' .mbody').on('mozTransitionEnd');		
+													});
+												$('#' + this.id + ' .mbody').on('oTransitionEnd', function(){
+														this.status = STATUS_ACTIVE;
+														$('#' + this.id + ' .mbody').on('oTransitionEnd');		
+													});
+												$('#' + this.id + ' .mbody').on('transitionend', function(){
+														this.status = STATUS_ACTIVE;
+														$('#' + this.id + ' .mbody').on('transitionend');		
+													});
 											}
 
 
@@ -656,7 +682,11 @@ hostMessage_prototype.dispappear		= 	function(o){
 												$('#' + this.id + ' .mbody').css(after);
 												$('#' + this.id).css('opacity', 0);
 												
-												this.status = STATUS_DEATH;
+												// mbodyのtransitionが終わったらデストロイメソッドを実行
+												$('#' + this.id + ' .mbody').on('webkitTransitionEnd', this.desyroy);
+												$('#' + this.id + ' .mbody').on('mozTransitionEnd', this.desyroy);
+												$('#' + this.id + ' .mbody').on('oTransitionEnd', this.desyroy);
+												$('#' + this.id + ' .mbody').on('transitionend', this.desyroy);
 											}										
 
 // ====================================================================================================

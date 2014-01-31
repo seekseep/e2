@@ -3,13 +3,27 @@
 // ==
 // ビッグスクリーン全体の操作の根幹を担う
 // ====================================================================================================
-
 // ビッグスクリーンオブジェクト
 var bigscreen = new Object();
 
 // イベントコードの取得
 bigscreen.getEventCode = function(){
-	this.eventCode = $('#bigscreenApp').attr('data-eventCode');
+	this.eventCode = $('#bigscreenApp').attr('data-eventcode');
+}
+
+bigscreen.start = function(){
+	$('#bigscreenApp').attr('data-status', 'active');
+
+	//　メッセージマネージャーを起動する
+	messagesManager.start();
+}
+
+
+bigscreen.stop = function(){
+	$('#bigscreenApp').attr('data-status', 'suspension');
+
+	// メッセージマネージャーを停止する
+	messagesManager.stop();	
 }
 
 // ビッグスクリーンのステータスの取得
@@ -46,10 +60,13 @@ bigscreen.getEventCode = function(){
 
 $(document).ready(function() {
 
-	
-	console.log('event code is ', eventCode);
+	bigscreen.getEventCode();
+	console.log('event code is ', bigscreen.eventCode);
 
-	setTimeout(function(){
-		bigscreen.startGetMessage();
-	}, 500);
+	bigscreen.start();
+
+
+	// setTimeout(function(){
+	// 	bigscreen.startGetMessage();
+	// }, 500);
 });

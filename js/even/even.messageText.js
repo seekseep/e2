@@ -14,8 +14,6 @@ var tmpTexts = new Array();
 
 function messageText(o){
 
-	console.log(o);
-
 	var tId = o.id;
 
 	// 中身を空にする

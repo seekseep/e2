@@ -1,7 +1,13 @@
 // ====================================================================================================
-// VISITOR-MESSAGE(2000)
+// VISITOR-MESSAGE
 // ==
 // 参加者側がスマートフォンを用いて操作することのできるメッセージ
+// ====================================================================================================
+var MCALL_STAY		= 1;
+var MCALL_MOVE 		= 2;
+var MCALL_RESIZE 	= 3;
+var MCALL_OPACITY 	= 4;
+var MCALL_REMOVE 	= 5;
 // ====================================================================================================
 
 // ビジターメッセージオブジェクト
@@ -25,10 +31,9 @@ visitorMessage_prototype.updateMessageCommand = function(){
 													}else{
 														this.hitSkyTime++;
 														
-														if(this.hitSkyTime > 1000){
+														if(this.hitSkyTime > 30000 / messagesManager.updateInterval){ // 30,000 ms -> 30秒放置で削除
 														
-															this.status = STATUS_DEATH;
-															console.log('dEATH');
+															// destroyメソッドの呼び出しをメッセージマネージャーに要求
 															return false;
 														
 														}else{
@@ -47,22 +52,23 @@ visitorMessage_prototype.updateMessageCommand = function(){
 												};
 
 // 実行されたコマンドをタイプで判別し、それぞれのメソッドを呼び出す
-visitorMessage_prototype.call 				=	function(o){
-													switch(o.type){
-														case COMMAND_STAY 		: this.stay(o); 	break;
-														case COMMAND_MOVE 		: this.move(o); 	break;
-														case COMMAND_RESIZE 	: this.resize(o); 	break;
-														case COMMAND_OPACITY	: this.opacity(o); 	break;
-														case COMMAND_REMOVE 	: this.remove(); 	break;
-														default 				: break;
-													}
+visitorMessage_prototype.call		= 	function(o){
 
-													return;
-												};
+												var res = false;
+
+												switch(o.type){
+													case MCALL_STAY 		: res = this.stay(o); 		break;
+													case MCALL_MOVE 		: res = this.move(o); 		break;
+													case MCALL_RESIZE 		: res = this.resize(o); 	break;
+													case MCALL_OPACITY		: res = this.opacity(o); 	break;
+													default 				: break;
+												}
+
+												return res;
+											};
 
 // bornメソッドの定義
 visitorMessage_prototype.born		= 	function(o){
-											console.log('called : ', o);
 
 											// id の定義
 											this.id = o.id;
@@ -72,7 +78,7 @@ visitorMessage_prototype.born		= 	function(o){
 														.css('display', 'none')
 														.attr('id', this.id)
 														.addClass('message')
-														.appendTo('#' + o.layer);
+														.appendTo('#visitorLayer');
 
 											// メッセージの作成情報の抽出
 											var messageId 		= o.id;
@@ -121,7 +127,7 @@ visitorMessage_prototype.born		= 	function(o){
 
 											// 出現用のメッセージコマンドの定義
 											var nextCommand = {
-												type 	: COMMAND_MOVE,
+												type 	: MCALL_MOVE,
 												x 		: appearX,
 												y 		: appearY,
 												absolute: true
@@ -135,6 +141,8 @@ visitorMessage_prototype.born		= 	function(o){
 
 											// コマンドを登録
 											this.addMessageCommand(nextCommand);
+
+											return this;
 										};
 // メッセージを動かす。絶対値と相対値を指定できる。
 visitorMessage_prototype.move 				= 	function(o){
@@ -162,6 +170,8 @@ visitorMessage_prototype.move 				= 	function(o){
 														'left' 	: this.x + '%',
 														'top'	: this.y + '%'
 													});
+
+													return this;
 												}
 
 // メッセージの大きさを変える。絶対値と相対値を指定できる。
@@ -185,6 +195,8 @@ visitorMessage_prototype.resize 			= 	function(o){
 														'width'		: this.size * $(window).innerHeight() / 100 + 'px',
 														'height'	: this.size * $(window).innerHeight() / 100 + 'px'
 													});
+
+													return this;
 												};
 
 // メッセージの透明度を変える。絶対値と相対値を指定できる。
@@ -202,6 +214,8 @@ visitorMessage_prototype.opacity 			= 	function(o){
 													$('#' + this.id).css({
 														'opacity'	: this.opacity
 													});
+
+													return this;
 												};
 
 // z-indexを変える。絶対値と相対値を指定できる。
@@ -215,5 +229,11 @@ visitorMessage_prototype.zIndex			= 	function(o){
 													$('#' + this.id).css({
 														'z-index'	: this.z
 													});
+
+													return this;
 												}
 // ====================================================================================================
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
