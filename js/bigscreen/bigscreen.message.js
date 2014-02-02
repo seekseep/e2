@@ -12,6 +12,7 @@ message_prototype.addMessageCommand = 	function(o){
 											console.log(this.status, STATUS_ACTIVE);
 											if(this.status == STATUS_ACTIVE || this.status == STATUS_LEFT){
 												this.commandQueue.push(o);
+												//this.updateMessageCommand1(o);
 												return true;
 											}else{
 												return false;
@@ -26,24 +27,25 @@ message_prototype.wedgeMessageCommand = function(o){
 											}
 										};
 // キューに入ったコマンドを実行する
-message_prototype.updateMessageCommand = function(){
-											var option = this.getMessageCommand();
+message_prototype.updateMessageCommand = function(){};
+// = function(){
+// 											var option = this.getMessageCommand();
 
-											if(option){
-												this.hitSkyTime = 0;
-												this.call(option);
-												return true;
-											}else{
-												this.hitSkyTime++;
-												if(this.hitSkyTime > 1000){
-													this.status = STATUS_DEATH;
-													console.log('DEATH');
-													return false;
-												}else{												
-													return true;
-												}
-											}									
-										};
+// 											if(option){
+// 												this.hitSkyTime = 0;
+// 												this.call(option);
+// 												return true;
+// 											}else{
+// 												this.hitSkyTime++;
+// 												if(this.hitSkyTime > 1000){
+// 													this.status = STATUS_DEATH;
+// 													console.log('DEATH');
+// 													return false;
+// 												}else{												
+// 													return true;
+// 												}
+// 											}									
+// 										};
 
 // 実行されたコマンドをタイプで判別し、それぞれのメソッドを呼び出す
 message_prototype.call 				=	function(o){
@@ -89,6 +91,29 @@ visitorMessage_prototype.__proto__ 	= 	message_prototype;
 visitorMessage_prototype.updateMessageCommand = function(){
 													var option = this.getMessageCommand();
 
+													if(option){
+														this.hitSkyTime = 0;
+														this.zIndex({'z' : 1});
+														this.call(option);
+														return true;
+													}else{
+														this.hitSkyTime++;
+														if(this.hitSkyTime > 1000){
+															this.status = STATUS_DEATH;
+															console.log('dEATH');
+															return false;
+														}else{
+															if(this.size > 10){
+																var size = 0.01 * this.size;
+																this.resize({'size'	: -(size)});
+																this.zIndex({'z' 	: -1});
+															}
+															return true;
+														}
+													}									
+												};
+
+visitorMessage_prototype.updateMessageCommand1 = function(option){
 													if(option){
 														this.hitSkyTime = 0;
 														this.zIndex({'z' : 1});

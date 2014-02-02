@@ -31,6 +31,8 @@ var visitor_prototype = {
 	messageShapeCode	: null,
 	messageColorCode	: null,
 	messageTextWords 		: null,
+
+	ws 					: null,
 	// = visitor設定メソッド
 	initVisitor 			: function(){
 								// ユーザーIDの取得
@@ -38,7 +40,28 @@ var visitor_prototype = {
 								// イベントIDの取得
 								this.setEventId();
 							},
-	// = 送信用メソッド
+
+	initWebSocket 	: 	function(){
+								//webSocket 初期化
+								this.ws = new WebSocket("ws://127.0.0.1:8082/client");
+
+								//JSON形式のデータを送信する
+								this.ws.sendJSON = function(obj){
+									this.send(JSON.stringify(obj));
+								};
+
+								//接続完了したらイベントコードを送信
+								this.ws.onopen = function(){
+									var obj = {};
+									obj.type = "join";
+									obj.eventCode = visitor.eventCode;
+									this.sendJSON(obj);
+								};
+								this.ws.onclose = function(){
+									
+								};
+	},
+ 	// = 送信用メソッド
 	// - ADDメッセージの作成
 	sendAddMessage 	: function(){
 
@@ -97,6 +120,8 @@ var visitor_prototype = {
 						},
 	// - メッセージの送信
 	sendMessage 	: function(mes){
+							this.ws.sendJSON(mes);
+							console.log(mes);
 							$.ajax({
 								url: './php/sendMessage.php',
 								type: 'GET',
@@ -161,4 +186,5 @@ $(document).ready(function(){
 	// 		~UserIdとEventIdの取得
 	visitor.setEventId();
 	visitor.setUserId();
+	visitor.initWebSocket();
 });
