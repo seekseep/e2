@@ -43,7 +43,7 @@ var visitor_prototype = {
 
 	initWebSocket 	: 	function(){
 								//webSocket 初期化
-								this.ws = new WebSocket("ws://127.0.0.1:8082/client");
+								this.ws = new WebSocket("ws://taku.st-sweet.com:8082/client");
 
 								//JSON形式のデータを送信する
 								this.ws.sendJSON = function(obj){

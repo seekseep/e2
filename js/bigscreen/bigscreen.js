@@ -4,7 +4,7 @@ var bigscreen 			= new Object();
 bigscreen.ws 				= 	null;
 
 bigscreen.initWebSocket 	= 	function(){
-									this.ws 	= 	new WebSocket('ws://127.0.0.1:8082/bigscreen');
+									this.ws 	= 	new WebSocket('ws://taku.st-sweet.com:8082/bigscreen');
 									this.ws.sendJSON	= function(obj){
 										this.send(JSON.stringify(obj));
 									}
