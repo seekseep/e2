@@ -394,7 +394,7 @@ hostMessage_prototype.appear			= 	function(o){
 												before.opacity = 0;
 
 												// del 秒後に sec秒かけて変化する
-												transitionP += "opacity" + fadeInSec + 's' + ' ease' + fadeInDel + 's,';
+												transitionP += "opacity " + fadeInSec + 's' + ' ease ' + fadeInDel + 's, ';
 
 
 												// スライドイン
@@ -434,8 +434,8 @@ hostMessage_prototype.appear			= 	function(o){
 
 
 													before.top 	= 100 * rate * dir + '%';
-													transitionP += 'top' + slideInSec + 's ' + ' ease' + slideInDel + 's,';
-													transitionP += 'left 0s ease 0s,';
+													transitionP += 'top ' + slideInSec + 's ' + ' ease ' + slideInDel + 's, ';
+													transitionP += 'left 0s ease 0s, ';
 
 												}else if(direction == DIRECTION_LEFT || direction == DIRECTION_RIGHT){
 
@@ -445,10 +445,10 @@ hostMessage_prototype.appear			= 	function(o){
 													
 													before.left = 100 * rate * dir + '%';
 													transitionP += 'top 0s ease 0s,';
-													transitionP += "left" 	+ slideInSec + 's' + ' ease' + slideInDel + 's,';
+													transitionP += 'left ' 	+ slideInSec + 's' + ' ease' + slideInDel + 's, ';
 												}else{
-													transitionP += 'top 0s ease 0s,';
-													transitionP += 'left 0s ease 0s,';
+													transitionP += 'top 0s ease 0s, ';
+													transitionP += 'left 0s ease 0s, ';
 												}
 
 												// サイジングイン
@@ -479,8 +479,10 @@ hostMessage_prototype.appear			= 	function(o){
 
 												before.width 	= sizingInSize;
 												before.height 	= sizingInSize;
-												transitionP += " width"  + sizingInSec + 's' + ' ease' + sizingInDel + 's,';
-												transitionP += " height" + sizingInSec + 's' + ' ease' + sizingInDel + 's';
+												transitionP += " width "  + sizingInSec + 's ' + 'ease ' + sizingInDel + 's,';
+												transitionP += " height " + sizingInSec + 's ' + 'ease ' + sizingInDel + 's';
+
+												console.log(transitionP);
 
 												// 各ベンダープリフェックスに対応してプロパティを定義
 												$('#' + this.id + ' .mbody').css('-webkit-transition', transitionP);
@@ -496,13 +498,13 @@ hostMessage_prototype.appear			= 	function(o){
 												$('#' + this.id).css('display', 'block');
 						
 												// メッセージを表示状態に戻す
-												$('#' + this.id + '_mbody').css = {
+												$('#' + this.id + ' .mbody').css({
 																	top : 0,
 																	left: 0,
 																	opacity: 1,
 																	width: '100%',
 																	height: '100%'
-																}
+																});
 
 												// transition中のあいだはdisappearコマンドを実行させない為に
 												// animatingにする。

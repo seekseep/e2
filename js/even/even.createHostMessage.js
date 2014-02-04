@@ -10,7 +10,7 @@ function createHostMessage(o){
 		.appendTo('#' + o.id);
 
 	// タイプごとの要素の作成
-	if(o.mType == 'rect'){
+	if(o.mType == HMESSAGE_RECT){
 		$('<div>')
 			.attr('id', o.id + '_rect')
 			.addClass('rect')
@@ -29,17 +29,17 @@ function createHostMessage(o){
 
 		var AspectRatio, textX, textAnc;
 		switch(o.textAlign){
-			case 'left' 	:
+			case TEXTALIGN_LEFT :
 					AspectRatio = 'xMinYMid meet';
 					textX		= 0;
 					textAnc 	= 'start'; 
 				break;
-			case 'center'	:
+			case TEXTALIGN_CENTER :
 					AspectRatio = 'xMidYMid meet';
 					textX 		= 50;
 					textAnc 	= 'middle';
 				break;
-			case 'right' 	:
+			case TEXTALIGN_RIGHT :
 					AspectRatio = 'xMaxYMid meet';
 					textX 		= 100;
 					textAnc 	= 'end';
@@ -60,7 +60,7 @@ function createHostMessage(o){
 						'text-anchor'	: textAnc
 					});
 
-	}else if(o.mType == 'path'){
+	}else if(o.mType == HMESSAGE_PATH){
 
 		$('<div>')
 			.attr('id', o.id + '_shape')
