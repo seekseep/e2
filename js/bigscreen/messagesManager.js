@@ -6,12 +6,16 @@
 var MMCALL_ADD		= 1;
 var MMCALL_OPERATE	= 2;
 // == 
-var MMLAYER_HOST1		= 1;
-var MMLAYER_HOST2		= 2;
-var MMLAYER_VISITOR		= 3;
+var MMMTYPE_VISITOR 	= 1;
+var MMMTYPE_HPATH 		= 2;
+var MMMTYPE_HWALL 		= 3;
+var MMMTYPE_HVERTICAL	= 4;
+var MMMTYPE_HHORIZONTAL	= 5;
 // ==
 var MMSTATUS_SLEEP		= 0;
 var MMSTATUS_ACTIVE		= 1;
+// ==
+var MMUPDATEINTERVAL 	= 50;
 // ====================================================================================================
 
 // メッセージマネージャー
@@ -36,35 +40,32 @@ messagesManager.idExist = function(id){
 }
 
 messagesManager.call = function(o){
-
-	switch(o.mmcall){
-		case MMCALL_ADD 	: this.add(o.cmd); 		break;
-		case MMCALL_OPERATE	: this.operate(o.cmd);	break;
-		default: ;
+	switch(o.mmCall){
+		case MMCALL_ADD 	: return this.add(o.cmd); 		break;
+		case MMCALL_OPERATE	: return this.operate(o.cmd);	break;
 	}
-
 }
 
-messagesManager.add 	= function(o){
+messagesManager.add 	= function(cmd){
 
-	if(this.idExist(o.id)){
+	if(this.idExist(cmd.option.id)){
 		console.log('重複したIDです。');
 	}else{
 		var message = new Object();
 
-		switch(o.layer){
-			case MMLAYER_VISITOR : message.__proto__ = visitorMessage_prototype; break;
-			case MMLAYER_HOST1	:
-			case MMLAYER_HOST2	: message.__proto__ = hostMessage_prototype;	break;
-			default: ;
+		switch(cmd.mType){
+			case MMMTYPE_VISITOR 		: message.__proto__ = visitorMessage_prototype;				break;
+			case MMMTYPE_HPATH 			: message.__proto__ = hostPathMessage_prototype;			break;
+			case MMMTYPE_HWALL 			: message.__proto__ = hostRectWallMessage_prototype;		break;
+			case MMMTYPE_HVERTICAL		: message.__proto__ = hostRectVerticalMessage_prototype;	break;
+			case MMMTYPE_HHORIZONTAL	: message.__proto__ = hostRectHorizontalMessage_prototype;	break;
 		}
 
-		if(!message.born(o)){
-			console.log("BORNメソッドの実行に失敗しました。");
-		}
+		message.born(cmd.option);
 
 		this.list[message.id] = message;
-
+	
+		return message;
 	}
 }
 
@@ -75,24 +76,21 @@ messagesManager.operate = function(o){
 		this.list[o.id].addMessageCommand(o);
 	}
 }
-
+// Windowオブジェクトに呼び出される為 'this' は使わない。
 messagesManager.update = function(){
 	for(var id in messagesManager.list){
 
-		var m = messagesManager.list[id];
+		var res = messagesManager.list[id].update();
 
-		var r = m.updateMessageCommand();
-
-		if(!r){
-			m.destroy();
+		if(!res){
 			delete messagesManager.list[id];
 		}
 	}
 }
 
 messagesManager.updateStart = function(){
-	if(!messagesManager.timer){
-		messagesManager.timer = setInterval(messagesManager.update, messagesManager.updateInterval);
+	if(!this.timer){
+		this.timer = setInterval(this.update, this.updateInterval);
 		console.log("更新を開始しました。");
 		return true;
 	}else{
@@ -101,8 +99,8 @@ messagesManager.updateStart = function(){
 }
 
 messagesManager.updateStop = function(){
-	if(messageManager.timer){
-		clearInterval(messageManager.timer);
+	if(this.timer){
+		clearInterval(this.timer);
 		console.log("更新を終了しました。");
 	}else{
 		console.log("更新は始まっていません。");
@@ -126,8 +124,8 @@ messagesManager.start = function(){
 
 messagesManager.stop = function(){
 
-	if(!this.status == MMSTATUS_ACTIVE){
-		if(messagesManager.updateStop()){
+	if(this.status == MMSTATUS_ACTIVE){
+		if(this.updateStop()){
 			this.status = MMSTATUS_SLEEP;
 			console.log("MessageManagerを停止しました。");
 		}else{

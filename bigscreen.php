@@ -39,16 +39,21 @@
         <script src="js/even/even.messageText.js" type="text/javascript" charset="utf-8"></script>
         <script src="js/even/even.createVisitorMessage.js" type="text/javascript" charset="utf-8"></script>
         <script src="js/even/even.createHostMessage.js" type="text/javascript" charset="utf-8"></script>
-        <!-- dcript : bigscreen -->
-        <script src="js/bigscreen/bigscreen.js" type="text/javascript" charset="utf-8"></script>
-        <script src="js/bigscreen/bigscreen.message.js" type="text/javascript" charset="utf-8"></script>
-        <script src="js/bigscreen/bigscreen.visitorMessage.js" type="text/javascript" charset="utf-8"></script>
-        <script src="js/bigscreen/bigscreen.hostMessage.js" type="text/javascript" charset="utf-8"></script>
-        <script src="js/bigscreen/bigscreen.messagesManager.js" type="text/javascript" charset="utf-8"></script>
+        <!-- script : bigscreen -->
+        <script src="js/bigscreen/bigscreen.js" type="text/javascript"></script>
+        <script src="js/bigscreen/messagesManager.js" type="text/javascript"></script>
+        <script src="js/bigscreen/message.js" type="text/javascript"></script>
+        <script src="js/bigscreen/visitorMessage.js" type="text/javascript"></script>
+        <script src="js/bigscreen/hostMessage.js" type="text/javascript"></script>
+        <script src="js/bigscreen/hostPathMessage.js" type="text/javascript"></script>
+        <script src="js/bigscreen/hostRectMessage.js" type="text/javascript"></script>
+        <script src="js/bigscreen/hostRectWallMessage.js" type="text/javascript"></script>
+        <script src="js/bigscreen/hostRectVerticalMessage.js" type="text/javascript"></script>
+        <script src="js/bigscreen/hostRectHorizontalMessage.js" type="text/javascript"></script>
         <!-- css -->
         <link rel="stylesheet" href="css/bigscreen/bigscreen.css">
-        <link rel="stylesheet" href="css/even/even.message.css">
-        <link rel="stylesheet" href="css/even/even.fontsize.css">
+        <link rel="stylesheet" href="css/bigscreen/message.css">
+        <link rel="stylesheet" href="css/even/even.fontsize.css"> 
     </head>
 <body>
 <article id="bigscreenApp" data-status="suspension" data-eventCode='<?php echo $eventCode; ?>'>
