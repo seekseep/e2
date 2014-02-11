@@ -19,7 +19,6 @@ dataManager_prototype.register	= function(id){
 										}
 									}
 
-
 									return this.datas;
 								};
 // ============================================================

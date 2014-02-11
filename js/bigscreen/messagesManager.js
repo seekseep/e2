@@ -41,19 +41,19 @@ messagesManager.idExist = function(id){
 
 messagesManager.call = function(o){
 	switch(o.mmCall){
-		case MMCALL_ADD 	: return this.add(o.cmd); 		break;
-		case MMCALL_OPERATE	: return this.operate(o.cmd);	break;
+		case MMCALL_ADD 	: return this.add(o); 		break;
+		case MMCALL_OPERATE	: return this.operate(o);	break;
 	}
 }
 
-messagesManager.add 	= function(cmd){
+messagesManager.add 	= function(o){
 
-	if(this.idExist(cmd.option.id)){
+	if(this.idExist(o.id)){
 		console.log('重複したIDです。');
 	}else{
 		var message = new Object();
 
-		switch(cmd.mType){
+		switch(o.mType){
 			case MMMTYPE_VISITOR 		: message.__proto__ = visitorMessage_prototype;				break;
 			case MMMTYPE_HPATH 			: message.__proto__ = hostPathMessage_prototype;			break;
 			case MMMTYPE_HWALL 			: message.__proto__ = hostRectWallMessage_prototype;		break;
@@ -61,7 +61,7 @@ messagesManager.add 	= function(cmd){
 			case MMMTYPE_HHORIZONTAL	: message.__proto__ = hostRectHorizontalMessage_prototype;	break;
 		}
 
-		message.born(cmd.option);
+		message.born(o);
 
 		this.list[message.id] = message;
 	
@@ -73,7 +73,7 @@ messagesManager.operate = function(o){
 	if(!this.idExist(o.id)){
 		console.log('IDが存在しません。');
 	}else{
-		this.list[o.id].addMessageCommand(o);
+		this.list[o.id].pushCmd(o);
 	}
 }
 // Windowオブジェクトに呼び出される為 'this' は使わない。

@@ -22,38 +22,31 @@
     }else{
 ?>
 <!doctype html>
-<html>
+<html lang="ja">
     <head>
         <meta charset="utf-8">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>BIGSCREEN</title>
-        <link rel="shortcut icon" href="favicon.ico">
+        <title>ビッグスクリーン | e2</title>
         <!-- lib -->
-        <script src="./lib/jquery-1.10.2.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="./lib/raphael-min.js" type="text/javascript" charset="utf-8"></script>
-        <!-- script : even -->
-        <script src="js/even/even.constants.js" type="text/javascript" charset="utf-8"></script>
-        <script src="js/even/even.codeManager.js" type="text/javascript" charset="utf-8"></script>
-        <script src="js/even/even.flexibleSvg.js" type="text/javascript" charset="utf-8"></script>
-        <script src="js/even/even.messageText.js" type="text/javascript" charset="utf-8"></script>
-        <script src="js/even/even.createVisitorMessage.js" type="text/javascript" charset="utf-8"></script>
-        <script src="js/even/even.createHostMessage.js" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript" src="./lib/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="./lib/raphael-min.js"></script>
         <!-- script : bigscreen -->
-        <script src="js/bigscreen/bigscreen.js" type="text/javascript"></script>
-        <script src="js/bigscreen/messagesManager.js" type="text/javascript"></script>
-        <script src="js/bigscreen/message.js" type="text/javascript"></script>
-        <script src="js/bigscreen/visitorMessage.js" type="text/javascript"></script>
-        <script src="js/bigscreen/hostMessage.js" type="text/javascript"></script>
-        <script src="js/bigscreen/hostPathMessage.js" type="text/javascript"></script>
-        <script src="js/bigscreen/hostRectMessage.js" type="text/javascript"></script>
-        <script src="js/bigscreen/hostRectWallMessage.js" type="text/javascript"></script>
-        <script src="js/bigscreen/hostRectVerticalMessage.js" type="text/javascript"></script>
-        <script src="js/bigscreen/hostRectHorizontalMessage.js" type="text/javascript"></script>
+        <script type="text/javascript" src="./js/bigscreen/bigscreen.js"></script>
+        <script type="text/javascript" src="./js/bigscreen/messagesManager.js"></script>
+        <script type="text/javascript" src="./js/even/codeManager.js"></script>
+        <script type="text/javascript" src="./js/bigscreen/message.js"></script>
+        <script type="text/javascript" src="./js/bigscreen/visitorMessage.js"></script>
+        <script type="text/javascript" src="./js/bigscreen/hostMessage.js"></script>
+        <script type="text/javascript" src="./js/bigscreen/hostPathMessage.js"></script>
+        <script type="text/javascript" src="./js/bigscreen/hostRectMessage.js"></script>
+        <script type="text/javascript" src="./js/bigscreen/hostRectWallMessage.js"></script>
+        <script type="text/javascript" src="./js/bigscreen/hostRectVerticalMessage.js"></script>
+        <script type="text/javascript" src="./js/bigscreen/hostRectHorizontalMessage.js"></script>
         <!-- css -->
-        <link rel="stylesheet" href="css/bigscreen/bigscreen.css">
-        <link rel="stylesheet" href="css/bigscreen/message.css">
-        <link rel="stylesheet" href="css/even/even.fontsize.css"> 
+		<link type="text/css" rel="stylesheet" href="css/fontsize.css" />
+		<link type="text/css" rel="stylesheet" href="css/message.css" />
+		<link type="text/css" rel="stylesheet" href="css/bigscreen.css" />
     </head>
 <body>
 <article id="bigscreenApp" data-status="suspension" data-eventCode='<?php echo $eventCode; ?>'>

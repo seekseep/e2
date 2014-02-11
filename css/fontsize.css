@@ -1,6 +1,3 @@
-/*========================================
-	文字コードの宣言
-----------------------------------------*/
 @charset 'utf-8';
 
 /*========================================
@@ -9,13 +6,13 @@
 /*	画面サイズが300px以下	*/
 @media screen and (min-width: 300px) {
 	body, input{
-		font-size: 10px;
+		font-size: 14px;
 	}
 }
 /*	画面サイズが400px以下	*/
 @media screen and (min-width: 400px) {
 	body, input{
-		font-size: 14px;
+		font-size: 16px;
 	}
 }
 /*	画面サイズが500px以下	*/
@@ -27,31 +24,31 @@
 /*	画面サイズが600px以下	*/
 @media screen and (min-width: 600px) {
 	body, input{
-		font-size: 22px;
+		font-size: 20px;
 	}
 }
 /*	画面サイズが700px以下	*/
 @media screen and (min-width: 700px) {
 	body, input{
-		font-size: 26px;
+		font-size: 22px;
 	}
 }
 /*	画面サイズが800px以下	*/
 @media screen and (min-width: 800px) {
 	body, input{
-		font-size: 30px;
+		font-size: 24px;
 	}
 }
 /*	画面サイズが900px以下	*/
 @media screen and (min-width: 900px) {
 	body, input{
-		font-size: 34px;
+		font-size: 26px;
 	}
 }
 /*	画面サイズが1000px以下	*/
 @media screen and (min-width: 1000px) {
 	body, input{
-		font-size: 38px;
+		font-size: 28px;
 	}
 }
 /*======================================*/

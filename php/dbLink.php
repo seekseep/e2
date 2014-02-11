@@ -1,5 +1,4 @@
 <?php
-// define("HOST", "oshipin.info");
 define("HOST", "localhost");
 define("USER", "e2");
 define("PW", "1381101");

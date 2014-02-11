@@ -19,7 +19,7 @@ var M_CMDTYPE_APPEAR 	= 1;
 var M_CMDTYPE_DISAPPEAR = 2;
 // WRAP系
 var M_CMDTYPE_POSITION 	= 3;
-var M_CMDTYPE_SIZE 		= 4;
+var M_CMDTYPE_RESIZE 	= 4;
 var M_CMDTYPE_OPACITY 	= 5;
 var M_CMDTYPE_ZINDEX 	= 6;
 var M_CMDTYPE_STAY 		= 7;
@@ -38,124 +38,61 @@ var M_EFFECT_SIZE_MINSIZE 	= 0;
 // ============================================================
 
 // ============================================================
-// ステータス変更メッソド
-//
-// message_prototype.beWating 		= function(){
-// 										this.status = M_STATUS_WATING;
-// 										return this.isWating();
-// 									};
-// message_prototype.beAnimating 	= function(){
-// 										this.status = M_STATUS_DEATH;
-// 										return this.isAnimating();
-// 									};
-// ============================================================
-
-// ============================================================
-// ステータス確認メッソド
-//
-// message_prototype.isWating 		= function(){
-// 										if(this.status == M_STATUS_WATING){
-// 											return true;
-// 										}else{
-// 											return false;
-// 										}
-// 									};
-// message_prototype.isAnimating 	= function(){
-// 										if(this.status == M_STATUS_ANIMATING){
-// 											return true;
-// 										}else{
-// 											return false;
-// 										}
-// 									};
-// ============================================================
-
-// ============================================================
 // HTML要素作成・削除メソッド
 //
-message_prototype.default = {
-					'x'				: 50,
-					'y' 			: 50,
-					'z'				: 100,
-					'size'			: 10,
-					'liveTime'		: 10000,
-					'opacity'		: 1,
-					'appearEffect'	: {
-										'fade' 		: true,
-										'slide'		: false,
-										'size'		: false 
-									},
-					'disappearEffect': {
-										'fade' 		: true,
-										'slide'		: false,
-										'size'		: false 
-									}		
-				};
+// 出現効果初期値
+message_prototype.appearFade		= true;
+message_prototype.appearSlide		= false;
+message_prototype.appearSize		= false;
+// 消滅効果初期値
+message_prototype.disappearFade		= true;
+message_prototype.disappearSlide	= false;
+message_prototype.disappearSize		= false;
+// 座標情報初期値
+message_prototype.x 				= 50;
+message_prototype.y 				= 50;
+// サイズ情報初期値
+message_prototype.size 				= 10;
+
+
 message_prototype.born			= function(o){
 
-										if(!o.id){
-											return false;
-										}else{
+										if(o.id){
 											this.id = o.id;
-										}
-
-										if(o.appearEffect){
-											this.appearEffect = o.appearEffect;
 										}else{
-											this.appearEffect = this.default.appearEffect;
+											return false;
 										}
 
-										if(o.liveTime){
-											this.liveTimeMax	= o.liveTime;
-										}else{
-											this.liveTimeMax 	= this.default.liveTime;
-										}
+										// 出現効果の設定
+										if(o.appearFade){	this.appearFade 	= o.appearFade;}
+										if(o.appearSlide){	this.appearSlide 	= o.appearSlide;}
+										if(o.appearSize){	this.appearSize 	= o.appearSize;}
 
-										if(o.disappearEffect){
-											this.disappearEffect = o.disappearEffect;
-										}else{
-											this.disappearEffect = this.default.disappearEffect;
-										}
+										// 生存時間の設定
+										if(o.liveTime){	this.liveTimeMax = o.liveTime}
 
-										// --
-										if(isNumber(o.x)){
-											this.x 	= o.x;
-										}else{
-											this.x 	= this.default.x;
-										}
+										// 消滅効果の設定
+										if(o.disappearFade){	this.disappearFade 	= o.disappearFade;}
+										if(o.disappearSlide){	this.disappearSlide	= o.disappearSlide;}
+										if(o.disappearSize){	this.disappearSize 	= o.disappearSize;}
 
-										if(isNumber(o.y)){
-											this.y 	= o.y;
-										}else{
-											this.y 	= this.default.y;
-										}
+										// 座標の設定
+										if(isNumber(o.x)){	this.x	= o.x;}
+										if(isNumber(o.y)){	this.y 	= o.y;}
+										if(isNumber(o.z)){	this.z	= o.z;}
 
-										if(o.size){
-											this.size = o.size;
-										}else{this.size = this.default.size;
-										}
+										// 大きさの設定
+										if(isNumber(o.size)){ this.size = o.size; }
 
-										if(o.z){
-											this.z = o.z;
-										}else{
-											this.z = this.default.z;
-										}
-
-										if(o.opacity){
-											this.opacity = o.opacity;
-										}else{
-											this.opacity = this.default.opacity;
-										}
-
-										if(o.layer){
-											this.layer = o.layer;
-										}
+										// レイヤーの設定
+										if(o.layer){　this.layer = o.layer;　}
 
 										// --
 
+										// メッセージの包括部の要素の作成
 										this.wrapElement	= $('<div>')
 																.attr({
-																	'id' 				: o.id,
-																	'data-messageid'	: o.id
+																	'id' 				: this.id
 																})
 																.addClass('message message_wrap')
 																.css({
@@ -168,22 +105,27 @@ message_prototype.born			= function(o){
 
 										this.bodyElement	= $('<div>')
 																.attr({
-																	'id' 				: o.id + '_body',
-																	'data-messageid'	: o.id
+																	'id' 				: this.id + '_body',
 																})
 																.addClass('message_body')
-																.appendTo('#' + o.id)[0];
+																.appendTo(this.wrapElement);
+
+										// 出現の準備
 										this.readyToAppear();
 
-
+										// メッセージ本体を作成
 										this.createMessageElement(o);
 
+										// コマンドキューの初期化
 										this.initQueue();
+
+										// 生存時間の設定
 										this.initLiveTime();
 
+										// 出現コマンドをキューに入れる
 										this.pushCmd({'type' : M_CMDTYPE_APPEAR});
 
-										// .message_bodyのトランジッション中にステイコマンドを実行させる
+										// 出現効果中に他のコマンドが実行されることを防ぐ為にステイコマンドをキューに入れる
 										var stayTime = 1000 / MMUPDATEINTERVAL;
 										this.pushCmd({'type' : M_CMDTYPE_STAY, 'o' : {'time' : stayTime}});
 
@@ -272,11 +214,11 @@ message_prototype.call 			= function(cmd){
 									switch(cmd.type){
 										case M_CMDTYPE_APPEAR 		: res = this.appear(); 				break;
 										case M_CMDTYPE_DISAPPEAR 	: res = this.disappear(); 			break;
-										case M_CMDTYPE_POSITION 	: res = this.position(cmd.o); 		break;
-										case M_CMDTYPE_SIZE			: res = this.size(cmd.o); 			break;
-										case M_CMDTYPE_OPACITY 		: res = this.opacity(cmd.o); 		break;
-										case M_CMDTYPE_ZINDEX 		: res = this.zindex(cmd.o); 		break;
-										case M_CMDTYPE_STAY 		: res = this.stay(cmd.o); 			break;
+										case M_CMDTYPE_POSITION 	: res = this.position(cmd); 		break;
+										case M_CMDTYPE_RESIZE		: res = this.resize(cmd); 			break;
+										case M_CMDTYPE_OPACITY 		: res = this.opacity(cmd); 		break;
+										case M_CMDTYPE_ZINDEX 		: res = this.zindex(cmd); 		break;
+										case M_CMDTYPE_STAY 		: res = this.stay(cmd); 			break;
 										case M_CMDTYPE_REMOVE 		: res = this.remove();				break;
 									}
 
@@ -284,12 +226,12 @@ message_prototype.call 			= function(cmd){
 								};
 
 // ステイメソッドはオブジェクトの存在をメッセージマネージャーに伝え、無動作を行う。
-message_prototype.stay 			= function(o){ 
+message_prototype.stay 			= function(cmd){ 
 									
-									if(o.time){
+									if(cmd.time){
 										this.unshiftCmd({
 												'type'	: M_CMDTYPE_STAY,
-												'o'		: { 'time' : (o.time - 1) }
+												'time'	: (cmd.time - 1)
 											});
 									}
 
@@ -324,11 +266,11 @@ message_prototype.readyToAppear	= function(){
 										'height'	: '100%'
 									}
 
-									if(this.appearEffect.fade){
+									if(this.appearFade){
 										style.opacity = 0;
 									}
 
-									switch(this.appearEffect.slide){
+									switch(this.appearSlide){
 										case M_EFFECT_SLIDE_UP :
 												style.top 	= (50 - M_EFFECT_SLIDE_LENGTH) + '%';
 											break;
@@ -345,7 +287,7 @@ message_prototype.readyToAppear	= function(){
 										;
 									}
 
-									switch(this.appearEffect.size){
+									switch(this.appearSize){
 										case M_EFFECT_SIZE_MAX :
 												style.width 	= M_EFFECT_SIZE_MAXSIZE + '%';
 												style.height 	= M_EFFECT_SIZE_MAXSIZE + '%';
@@ -372,7 +314,7 @@ message_prototype.appear		= function(){
 										return true;
 									};
 // --
-message_prototype.disappear		= function(o){
+message_prototype.disappear		= function(){
 
 										var style = {
 											'opacity'	: '1',
@@ -382,11 +324,11 @@ message_prototype.disappear		= function(o){
 											'height'	: '100%'
 										}
 
-										if(this.disappearEffect.fade){
+										if(this.disappearFade){
 											style.opacity = 0;
 										}
 
-										switch(this.disappearEffect.slide){
+										switch(this.disappearSlide){
 											case M_EFFECT_SLIDE_UP :
 													style.top 	= (50 - M_EFFECT_SLIDE_LENGTH) + '%';
 												break;
@@ -402,7 +344,7 @@ message_prototype.disappear		= function(o){
 											default :;
 										}
 
-										switch(this.disappearEffect.size){
+										switch(this.disappearSize){
 											case M_EFFECT_SIZE_MAX :
 													style.width 	= M_EFFECT_SIZE_MAXSIZE + '%';
 													style.height 	= M_EFFECT_SIZE_MAXSIZE + '%';
@@ -457,15 +399,24 @@ message_prototype.position 			= function(o){
 											this.y += o.y;
 										}
 
+										if(this.x > 100){ this.x = 100; }
+										if(this.x < 0){ this.x = 0; }
+
+										if(this.y > 100){ this.y = 100; }
+										if(this.y < 0){ this.y = 0; }
+
 										return this.matrix();
 									};
-message_prototype.size 				= function(o){
+message_prototype.resize 				= function(o){
 
 										if(o.absolute){
 											this.size = o.size;
 										}else{
 											this.size += o.size;
 										}
+
+										if(this.size > 100){ this.size = 100; }
+										if(this.size < 10){ this.size = 10; }
 
 										return this.matrix();
 									};									

@@ -6,67 +6,73 @@
 // ビッグスクリーンオブジェクト
 var bigscreen = new Object();
 
+// websocketオブジェクトの格納先
+bigscreen.ws 				= 	null;
+
+// websocketの初期化
+bigscreen.initWebSocket 	= 	function(){
+
+									// コネクションの作成
+									this.ws 	= 	new WebSocket('ws://taku.st-sweet.com:8082/bigscreen');
+
+									// 
+									this.ws.sendJSON	= function(obj){
+										this.send(JSON.stringify(obj));
+									}
+
+									var eventCode = this.eventCode;
+
+									// コネクションがとれたとき
+									this.ws.onopen = function(){
+														var obj 			= 	{};
+														obj.type 			= 	"join";
+														obj.eventCode 		= 	eventCode;
+														this.sendJSON(obj);
+													}
+
+									// メッセージを受信したとき
+									this.ws.onmessage = function(msg){
+										try{
+											messagesManager.call(msg);
+										}catch(e){
+											console.log(e);
+										}
+									}
+								};
+
 // イベントコードの取得
 bigscreen.getEventCode = function(){
 	this.eventCode = $('#bigscreenApp').attr('data-eventcode');
 }
 
 bigscreen.start = function(){
-	$('#bigscreenApp').attr('data-status', 'active');
+
+	// イベントコードの取得
+	this.getEventCode();
+
+	// Websocketの準備
+	this.initWebSocket();
 
 	//　メッセージマネージャーを起動する
 	messagesManager.start();
+
+	// ステータスの書き換え
+	$('#bigscreenApp').attr('data-status', 'active');
 }
 
 
 bigscreen.stop = function(){
+
+	// ステータスの書き換え
 	$('#bigscreenApp').attr('data-status', 'suspension');
 
 	// メッセージマネージャーを停止する
 	messagesManager.stop();	
 }
 
-// ビッグスクリーンのステータスの取得
-
-// var eventCode = "";
-// var bigscreen 			= new Object();	
-// bigscreen.getMessage 		= 	function(){
-// 									$.ajax(
-// 											{
-// 												url 		: './php/getMessage.php',
-// 												type 		: 'GET',
-// 												dataType 	: 'text',
-// 												data 		: {'eventCode' : eventCode},
-// 											}
-// 										)
-// 									.done(function(data) {
-// 										console.log(data);
-// 										eval(data);							
-// 									})
-// 									.fail(function() {
-// 										console.log("error");
-// 									})
-// 									.always(function() {
-// 									});
-// 								} 
-
-// bigscreen.startGetMessage 	= 	function(){
-// 									this.timer = setInterval(bigscreen.getMessage, 180);
-// 								}
-
-// bigscreen.stopGetMessage 	=	function(){
-// 									clearInterval(this.timer);
-// 								} 
 
 $(document).ready(function() {
 
-	bigscreen.getEventCode();
-	console.log('event code is ', bigscreen.eventCode);
-
 	bigscreen.start();
 
-
-	// setTimeout(function(){
-	// 	bigscreen.startGetMessage();
-	// }, 500);
 });
