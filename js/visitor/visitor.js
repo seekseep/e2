@@ -43,7 +43,7 @@ var visitor_prototype = {
 
 	initWebSocket 	: 	function(){
 								//webSocket 初期化
-								this.ws = new WebSocket("ws://taku.st-sweet.com:8082/client");
+								this.ws = new WebSocket("ws://133.242.163.169:8082/client");
 
 								//JSON形式のデータを送信する
 								this.ws.sendJSON = function(obj){
@@ -79,7 +79,7 @@ var visitor_prototype = {
 									'eventCode' : eCode,
 									'manager' 	: 'visitor',
 									'id'    	: vId,
-									'type' 		: 'add',
+									'type' 		: COMMAND_ADD,
 									'shapeCode' : shapeCode,
 									'colorCode' : colorCode,
 									'text' 		: textWords
@@ -96,7 +96,7 @@ var visitor_prototype = {
 								'eventCode' : this.eventCode,
 								'manager' 	: 'visitor',
 								'id'		: this.visitorId,
-								'type' 		: 'resize',
+								'type' 		: COMMAND_RESIZE,
 								'size'		: val.size
 							};
 
@@ -111,7 +111,7 @@ var visitor_prototype = {
 								'eventCode' : this.eventCode,
 								'manager' 	: 'visitor',
 								'id'		: this.visitorId,
-								'type' 		: 'move',
+								'type' 		: COMMAND_MOVE,
 								'x' 		: val.x,
 								'y' 		: val.y
 							};

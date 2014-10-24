@@ -49,12 +49,13 @@ message_prototype.updateMessageCommand = function(){};
 
 // 実行されたコマンドをタイプで判別し、それぞれのメソッドを呼び出す
 message_prototype.call 				=	function(o){
+											console.log("o.type = ", o.type);
 											switch(o.type){
-												case COMMAND_STAY 		: this.stay(o); 	break;
-												case COMMAND_MOVE 		: this.move(o); 	break;
-												case COMMAND_RESIZE 	: this.resize(o); 	break;
-												case COMMAND_OPACITY	: this.opacity(o); break;
-												case COMMAND_REMOVE 	: this.remove(); 		break;
+												case COMMAND_STAY 		:console.log("STAY"); this.stay(o); 	break;
+												case COMMAND_MOVE 		:console.log("MOVE"); this.move(o); 	break;
+												case COMMAND_RESIZE 	:console.log("RESIZE"); this.resize(o); 	break;
+												case COMMAND_OPACITY	:console.log("OPACITY"); this.opacity(o); break;
+												case COMMAND_REMOVE 	:console.log("REMOVE"); this.remove(); 		break;
 												default 				: break;
 											}
 

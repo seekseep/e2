@@ -35,7 +35,7 @@ messagesManager_prototype.control = function(cmd){
 										// 存在確認
 										if(this.list[id]){
 											var option 	= cmd.o;
-											this.list[id].addMessageCommand(option);
+											this.list[id].call(cmd);
 										}
 									}
 // ====================================================================================================

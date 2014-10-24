@@ -4,7 +4,7 @@ var bigscreen 			= new Object();
 bigscreen.ws 				= 	null;
 
 bigscreen.initWebSocket 	= 	function(){
-									this.ws 	= 	new WebSocket('ws://taku.st-sweet.com:8082/bigscreen');
+									this.ws 	= 	new WebSocket('ws://133.242.163.169:8082/bigscreen');
 									this.ws.sendJSON	= function(obj){
 										this.send(JSON.stringify(obj));
 									}
@@ -19,15 +19,15 @@ bigscreen.initWebSocket 	= 	function(){
 										try{
 											var recvObj = JSON.parse(msg.data);
 											//console.log(recvObj);
-											if(recvObj.type == "add"){
+											if(recvObj.type == COMMAND_ADD){
 												visitorMessagesManager.add(recvObj);
-											}else if(recvObj.type == "move"){
+											}else if(recvObj.type == COMMAND_MOVE ||recvObj.type == COMMAND_RESIZE){
 												visitorMessagesManager.control(recvObj);
 											}
 										}catch(e){}
 									}
 };
-	
+
 bigscreen.getMessage 		= 	function(){
 									/*$.ajax(
 											{

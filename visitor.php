@@ -68,6 +68,7 @@
 	<script src="js/even/even.createVisitorMessage.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/even/even.flexibleSvg.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/even/even.messageText.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/even/even.constants.js" type="text/javascript" charset="utf-8"></script>
 	<!-- visitor -->
 	<script src="js/visitor/visitor.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/visitor/visitor.pagerButtons.js" type="text/javascript" charset="utf-8"></script>
